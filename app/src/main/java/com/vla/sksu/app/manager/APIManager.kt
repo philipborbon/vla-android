@@ -88,7 +88,8 @@ class APIManager private constructor(context: Context) {
 //        })
     }
 
-    fun clearPushToken(completion: (ServiceResponse<Any>) -> Unit){
+    fun clearPushToken(completion: (ServiceResponse<Any>) -> Unit) {
+        completion(ServiceResponse(success = true))
         // TODO: clearPushToken
 //        val call = service.clearPushToken()
 //        call.enqueue(object: Callback<ServiceResponse<Any>> {
