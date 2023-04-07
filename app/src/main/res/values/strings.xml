@@ -3,9 +3,7 @@
 
     <string name="action_sign_in">Login</string>
     <string name="action_register">Register</string>
-    <string name="invalid_username_password">Incorrect username or password.</string>
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="invalid_username_password">Incorrect Library ID or password.</string>
     <string name="text_username">Library ID</string>
     <string name="text_password">Password</string>
 
