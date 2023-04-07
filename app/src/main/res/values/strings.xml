@@ -14,8 +14,9 @@
 
     <string name="menu_about">About</string>
     <string name="menu_account">Account</string>
-    <string name="menu_category">Category</string>
+    <string name="menu_category">Categories</string>
     <string name="menu_home">Home</string>
 
     <string name="text_label_username">Library ID: %1$s</string>
+    <string name="text_logout">Logout</string>
 </resources>

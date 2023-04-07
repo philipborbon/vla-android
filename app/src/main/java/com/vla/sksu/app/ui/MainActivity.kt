@@ -2,17 +2,19 @@ package com.vla.sksu.app.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.view.MenuItem
-import androidx.appcompat.app.ActionBarDrawerToggle
-import androidx.core.view.GravityCompat
-import com.google.android.material.navigation.NavigationView
+import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
+import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.navigation.ui.setupWithNavController
 import com.vla.sksu.app.R
 import com.vla.sksu.app.databinding.ActivityMainBinding
 import com.vla.sksu.app.databinding.NavHeaderMainBinding
 import java.net.HttpURLConnection
 
 
-class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedListener {
+class MainActivity : BaseActivity() {
+    private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,18 +22,7 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         binding = ActivityMainBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-
         setSupportActionBar(binding.main.toolbar)
-
-        val toggle = ActionBarDrawerToggle(
-            this, binding.drawerLayout, binding.main.toolbar,
-            R.string.navigation_drawer_open, R.string.navigation_drawer_close
-        )
-
-        binding.drawerLayout.addDrawerListener(toggle)
-        toggle.syncState()
-        
-        binding.navView.setNavigationItemSelectedListener(this)
 
         val headerView = binding.navView.getHeaderView(0)
         val headerViewBinding = NavHeaderMainBinding.bind(headerView)
@@ -47,43 +38,34 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
                 headerViewBinding.displayName.text = userStore.name ?: ""
             }
         }
+
+        // --
+
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+
+        // Passing each menu ID as a set of Ids because each
+        // menu should be considered as top level destinations.
+        appBarConfiguration = AppBarConfiguration(
+            setOf(
+                R.id.nav_home,
+                R.id.nav_category,
+                R.id.nav_account,
+                R.id.nav_about,
+            ), binding.drawerLayout
+        )
+
+        setupActionBarWithNavController(navController, appBarConfiguration)
+        binding.navView.setupWithNavController(navController)
     }
 
-    override fun onBackPressed() {
-        if (binding.drawerLayout.isDrawerOpen(GravityCompat.START)) {
-            binding.drawerLayout.closeDrawer(GravityCompat.START)
-        } else {
-            super.onBackPressed()
-        }
+    override fun onSupportNavigateUp(): Boolean {
+        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    override fun onNavigationItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.nav_logout -> logout()
-
-            R.id.nav_home -> {
-            }
-
-            R.id.nav_category -> {
-            }
-
-            R.id.nav_account -> {
-//                val intent = Intent(this, AccountActivity::class.java)
-//                startActivity(intent)
-            }
-
-            R.id.nav_about -> {
-            }
-        }
-
-        binding.drawerLayout.closeDrawer(GravityCompat.START)
-
-        return true
-    }
-
-    private fun logout(){
+    fun logout() {
         apiManager.clearPushToken { response ->
-            if (response.success == true) {
+            if (response.success) {
                 main.post {
                     userStore.clear()
                     authorizationStore.clear()
