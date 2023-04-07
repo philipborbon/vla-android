@@ -1,4 +1,4 @@
-package com.vla.sksu.app.ui.category
+package com.vla.sksu.app.ui.categories
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
