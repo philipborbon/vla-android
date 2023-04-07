@@ -2,6 +2,7 @@ package com.vla.sksu.app.manager
 
 import android.content.Context
 import com.vla.sksu.app.common.SingletonHolder
+import com.vla.sksu.app.data.Category
 import com.vla.sksu.app.data.ServiceResponse
 import com.vla.sksu.app.data.User
 import retrofit2.Call
@@ -51,6 +52,26 @@ class APIManager private constructor(context: Context) {
             }
 
             override fun onFailure(call: Call<User>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
+    fun getCategories(completion: (ServiceResponse<ArrayList<Category>>) -> Unit) {
+        service.getCategories().enqueue(object : Callback<ArrayList<Category>> {
+            override fun onResponse(
+                call: Call<ArrayList<Category>>,
+                response: Response<ArrayList<Category>>
+            ) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<ArrayList<Category>>, t: Throwable) {
                 completion(ServiceResponse(success = false, error = t))
             }
         })

@@ -2,9 +2,9 @@ package com.vla.sksu.app.manager
 
 import android.content.Context
 import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
 import com.vla.sksu.app.BuildConfig
 import com.vla.sksu.app.data.*
-import com.google.gson.GsonBuilder
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -73,4 +73,9 @@ interface ServerService {
 
     @DELETE("user/clearToken")
     fun clearPushToken(): Call<Any>
+
+    // --
+
+    @GET("categories")
+    fun getCategories(): Call<ArrayList<Category>>
 }

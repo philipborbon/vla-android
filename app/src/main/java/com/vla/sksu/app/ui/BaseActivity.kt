@@ -12,10 +12,10 @@ import com.vla.sksu.app.manager.UserStore
 
 
 open class BaseActivity : AppCompatActivity() {
-    protected lateinit var apiManager: APIManager
-    protected lateinit var userStore: UserStore
-    protected lateinit var authorizationStore: AuthorizationStore
-    protected lateinit var main: Handler
+    lateinit var apiManager: APIManager
+    lateinit var userStore: UserStore
+    lateinit var authorizationStore: AuthorizationStore
+    lateinit var main: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
