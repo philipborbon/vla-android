@@ -2,7 +2,6 @@ package com.vla.sksu.app.ui
 
 import android.content.Context
 import android.os.Bundle
-import android.os.Handler
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -15,7 +14,6 @@ open class BaseActivity : AppCompatActivity() {
     lateinit var apiManager: APIManager
     lateinit var userStore: UserStore
     lateinit var authorizationStore: AuthorizationStore
-    lateinit var main: Handler
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,8 +21,6 @@ open class BaseActivity : AppCompatActivity() {
         userStore = UserStore.getInstance(this)
         authorizationStore = AuthorizationStore.getInstance(this)
         apiManager = APIManager.getInstance(this)
-
-        main = Handler(mainLooper)
     }
 
     protected fun showToast(errorString: String?) {

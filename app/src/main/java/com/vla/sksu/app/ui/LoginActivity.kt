@@ -42,7 +42,7 @@ class LoginActivity : BaseActivity() {
         val password = binding.inputPassword.text.toString()
 
         apiManager.login(username, password) { response ->
-            main.post { binding.viewLoading.visibility = View.GONE }
+            binding.viewLoading.visibility = View.GONE
 
             if (response.success) {
                 val data = response.data
@@ -54,16 +54,14 @@ class LoginActivity : BaseActivity() {
 
                 authorizationStore.setAuthorization(authorization)
 
-                main.post { binding.viewLoading.visibility = View.VISIBLE }
+                binding.viewLoading.visibility = View.VISIBLE
 
                 // TODO: remove after push token is implemented
-                main.post {
-                    val intent = Intent(this@LoginActivity, MainActivity::class.java)
-                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    startActivity(intent)
+                val intent = Intent(this@LoginActivity, MainActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
 
-                    finish()
-                }
+                finish()
 
 //                TODO: update push token
 //                FirebaseInstanceId.getInstance().instanceId
@@ -102,12 +100,10 @@ class LoginActivity : BaseActivity() {
 //                        }
 //                    })
             } else {
-                main.post {
-                    if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        showToast(getString(R.string.invalid_username_password))
-                    } else {
-                        showToast(response.getErrorMessage())
-                    }
+                if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    showToast(getString(R.string.invalid_username_password))
+                } else {
+                    showToast(response.getErrorMessage())
                 }
             }
         }

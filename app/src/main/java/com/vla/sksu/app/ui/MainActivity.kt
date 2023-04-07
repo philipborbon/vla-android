@@ -66,22 +66,18 @@ class MainActivity : BaseActivity() {
     fun logout() {
         apiManager.clearPushToken { response ->
             if (response.success) {
-                main.post {
-                    userStore.clear()
-                    authorizationStore.clear()
+                userStore.clear()
+                authorizationStore.clear()
 
-                    val intent = Intent(this, SplashActivity::class.java)
-                    startActivity(intent)
+                val intent = Intent(this, SplashActivity::class.java)
+                startActivity(intent)
 
-                    finish()
-                }
+                finish()
             } else {
-                main.post {
-                    if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                        showToast(getString(R.string.invalid_username_password))
-                    } else {
-                        showToast(response.getErrorMessage())
-                    }
+                if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    showToast(getString(R.string.invalid_username_password))
+                } else {
+                    showToast(response.getErrorMessage())
                 }
             }
         }

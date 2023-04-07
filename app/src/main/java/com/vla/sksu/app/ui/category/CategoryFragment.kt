@@ -78,9 +78,7 @@ class CategoryFragment : BaseFragment() {
                         showToast(response.getErrorMessage())
                     }
 
-                    main?.post {
-                        binding.refresh.isRefreshing = false
-                    }
+                    binding.refresh.isRefreshing = false
                 }
             }
 
@@ -94,9 +92,7 @@ class CategoryFragment : BaseFragment() {
                         showToast(response.getErrorMessage())
                     }
 
-                    main?.post {
-                        binding.refresh.isRefreshing = false
-                    }
+                    binding.refresh.isRefreshing = false
                 }
             }
         }
