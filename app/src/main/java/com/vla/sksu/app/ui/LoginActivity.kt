@@ -3,6 +3,7 @@ package com.vla.sksu.app.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
+import android.view.inputmethod.EditorInfo
 import com.vla.sksu.app.R
 import com.vla.sksu.app.data.Authorization
 import com.vla.sksu.app.databinding.ActivityLoginBinding
@@ -18,13 +19,23 @@ class LoginActivity : BaseActivity() {
         binding = ActivityLoginBinding.inflate(layoutInflater)
 
         setContentView(binding.root)
-        
+
+        binding.inputPassword.setOnEditorActionListener { view, actionId, event ->
+            if (actionId == EditorInfo.IME_ACTION_DONE) {
+                doLogin()
+
+                return@setOnEditorActionListener true
+            }
+
+            return@setOnEditorActionListener false
+        }
+
         binding.buttonLogin.setOnClickListener {
             doLogin()
         }
     }
 
-    private fun doLogin(){
+    private fun doLogin() {
         binding.viewLoading.visibility = View.VISIBLE
 
         val username = binding.inputUsername.text.toString()
