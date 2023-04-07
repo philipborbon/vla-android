@@ -15,7 +15,7 @@ class CategoryAdapter(private val onSelect: (Category) -> Unit) : RecyclerView.A
     }
 
     override fun onBindViewHolder(holder: CategoryViewHolder, position: Int) {
-        dataList?.get(0)?.let {
+        dataList?.get(position)?.let {
             holder.bind(it)
         }
     }

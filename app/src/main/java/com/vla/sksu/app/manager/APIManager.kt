@@ -77,6 +77,26 @@ class APIManager private constructor(context: Context) {
         })
     }
 
+    fun getSubCategories(categoryId: Int, completion: (ServiceResponse<ArrayList<Category>>) -> Unit) {
+        service.getSubCategories(categoryId).enqueue(object : Callback<ArrayList<Category>> {
+            override fun onResponse(
+                call: Call<ArrayList<Category>>,
+                response: Response<ArrayList<Category>>
+            ) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<ArrayList<Category>>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
     fun updatePushToken(token: String?, completion: (ServiceResponse<Any>) -> Unit){
         // TODO: updatePushToken
 //        service.updatePushToken(token).enqueue(object: Callback<ServiceResponse<Any>> {

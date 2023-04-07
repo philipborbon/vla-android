@@ -15,7 +15,16 @@
         android:id="@+id/nav_category"
         android:name="com.vla.sksu.app.ui.category.CategoryFragment"
         android:label="@string/menu_category"
-        tools:layout="@layout/fragment_category" />
+        tools:layout="@layout/fragment_category" >
+        <action
+            android:id="@+id/action_nav_category"
+            app:destination="@id/nav_category" />
+        <argument
+            android:name="parent"
+            app:argType="com.vla.sksu.app.data.Category"
+            android:defaultValue="@null"
+            app:nullable="true" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_account"
