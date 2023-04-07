@@ -36,8 +36,17 @@ class MainActivity : BaseActivity(), NavigationView.OnNavigationItemSelectedList
         val headerView = binding.navView.getHeaderView(0)
         val headerViewBinding = NavHeaderMainBinding.bind(headerView)
 
-        headerViewBinding.displayEmail.text = userStore.email
-        headerViewBinding.displayName.text = "${userStore.firstname} ${userStore.lastname}"
+        headerViewBinding.displayUsername.text = getString(R.string.text_label_username, userStore.libraryId ?: "")
+        headerViewBinding.displayName.text = userStore.name
+
+        apiManager.whoAmI {
+            if (it.success && it.data != null) {
+                userStore.setUser(it.data!!)
+
+                headerViewBinding.displayUsername.text = getString(R.string.text_label_username, userStore.libraryId ?: "")
+                headerViewBinding.displayName.text = userStore.name ?: ""
+            }
+        }
     }
 
     override fun onBackPressed() {

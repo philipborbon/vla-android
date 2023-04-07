@@ -47,11 +47,6 @@ class LoginActivity : BaseActivity() {
             if (response.success) {
                 val data = response.data
 
-//                TODO: get user details
-//                data?.user?.let {
-//                    userStore.setUser(it)
-//                }
-
                 val authorization = Authorization(data)
 
                 authorizationStore.username = username

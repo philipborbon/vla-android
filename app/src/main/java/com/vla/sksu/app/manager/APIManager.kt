@@ -3,6 +3,7 @@ package com.vla.sksu.app.manager
 import android.content.Context
 import com.vla.sksu.app.common.SingletonHolder
 import com.vla.sksu.app.data.ServiceResponse
+import com.vla.sksu.app.data.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -34,6 +35,24 @@ class APIManager private constructor(context: Context) {
             }
 
             override fun onFailure(call: Call<String>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
+    fun whoAmI(completion: (ServiceResponse<User>) -> Unit) {
+        val call = service.whoAmI()
+        call.enqueue(object: Callback<User> {
+            override fun onResponse(call: Call<User>, response: Response<User>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<User>, t: Throwable) {
                 completion(ServiceResponse(success = false, error = t))
             }
         })

@@ -1,6 +1,7 @@
 package com.vla.sksu.app.manager
 
 import android.content.Context
+import com.google.gson.FieldNamingPolicy
 import com.vla.sksu.app.BuildConfig
 import com.vla.sksu.app.data.*
 import com.google.gson.GsonBuilder
@@ -22,6 +23,7 @@ interface ServerService {
                 val gsonBuilder = GsonBuilder()
                     .setLenient()
                     .excludeFieldsWithoutExposeAnnotation()
+                    .setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES)
                     .setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'")
 
 
@@ -61,6 +63,9 @@ interface ServerService {
     @FormUrlEncoded
     @POST("token")
     fun login(@Field("library_id") username: String?, @Field("password") password: String?): Call<String>
+
+    @GET("whoami")
+    fun whoAmI(): Call<User>
 
     @FormUrlEncoded
     @POST("user/updateToken")
