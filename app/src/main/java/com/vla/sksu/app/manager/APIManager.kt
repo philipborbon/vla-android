@@ -23,8 +23,7 @@ class APIManager private constructor(context: Context) {
     }
 
     fun login(username: String?, password: String?, completion: (ServiceResponse<String>) -> Unit) {
-        val call = service.login(username, password)
-        call.enqueue(object: Callback<String> {
+        service.login(username, password).enqueue(object: Callback<String> {
             override fun onResponse(call: Call<String>, response: Response<String>) {
                 val serviceResponse = ServiceResponse(response.body())
                 serviceResponse.status = response.code()
@@ -41,8 +40,7 @@ class APIManager private constructor(context: Context) {
     }
 
     fun whoAmI(completion: (ServiceResponse<User>) -> Unit) {
-        val call = service.whoAmI()
-        call.enqueue(object: Callback<User> {
+        service.whoAmI().enqueue(object: Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
                 val serviceResponse = ServiceResponse(response.body())
                 serviceResponse.status = response.code()
@@ -60,8 +58,7 @@ class APIManager private constructor(context: Context) {
 
     fun updatePushToken(token: String?, completion: (ServiceResponse<Any>) -> Unit){
         // TODO: updatePushToken
-//        val call = service.updatePushToken(token)
-//        call.enqueue(object: Callback<ServiceResponse<Any>> {
+//        service.updatePushToken(token).enqueue(object: Callback<ServiceResponse<Any>> {
 //            override fun onFailure(call: Call<ServiceResponse<Any>>, t: Throwable) {
 //                Timber.tag(LOG_TAG).e(t)
 //                completion(ServiceResponse(success = false, error = t))
@@ -91,8 +88,7 @@ class APIManager private constructor(context: Context) {
     fun clearPushToken(completion: (ServiceResponse<Any>) -> Unit) {
         completion(ServiceResponse(success = true))
         // TODO: clearPushToken
-//        val call = service.clearPushToken()
-//        call.enqueue(object: Callback<ServiceResponse<Any>> {
+//        service.clearPushToken().enqueue(object: Callback<ServiceResponse<Any>> {
 //            override fun onFailure(call: Call<ServiceResponse<Any>>, t: Throwable) {
 //                Timber.tag(LOG_TAG).e(t)
 //                completion(ServiceResponse(success = false, error = t))
