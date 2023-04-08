@@ -5,32 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.findNavController
-import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vla.sksu.app.R
-import com.vla.sksu.app.data.Category
 import com.vla.sksu.app.databinding.FragmentCategoryBinding
 import com.vla.sksu.app.ui.BaseFragment
 import timber.log.Timber
 
 private const val LOG_TAG = "CategoryFragment"
 
-class CategoryFragment : BaseFragment() {
+open class CategoryFragment : BaseFragment() {
     private var _binding: FragmentCategoryBinding? = null
-    private val binding get() = _binding!!
+    protected val binding get() = _binding!!
 
-    private var categoryAdapter: CategoryAdapter? = null
-
-    private val args: CategoryFragmentArgs by navArgs()
-
-    private var parent: Category? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        parent = args.parent
-    }
+    protected var categoryAdapter: CategoryAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -43,10 +31,14 @@ class CategoryFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        setupView()
+    }
+
+    open fun setupView() {
         binding.refresh.setColorSchemeResources(R.color.material_orange_500, R.color.material_red_500, R.color.material_teal_500)
 
         binding.refresh.setOnRefreshListener {
-            loadCategories(args.parent?.id ?: 0, true)
+            loadCategories(0, true)
         }
 
         categoryAdapter = CategoryAdapter {
@@ -63,13 +55,13 @@ class CategoryFragment : BaseFragment() {
         binding.recycler.layoutManager = LinearLayoutManager(requireContext())
         binding.recycler.addItemDecoration(DividerItemDecoration(binding.recycler.context, LinearLayoutManager.VERTICAL))
 
-        binding.category.text = parent?.name ?: ""
-        binding.category.visibility = if (parent == null) View.GONE else View.VISIBLE
+//        binding.category.text = parent?.name ?: ""
+//        binding.category.visibility = if (parent == null) View.GONE else View.VISIBLE
 
-        loadCategories(args.parent?.id ?: 0)
+        loadCategories(0)
     }
 
-    private fun loadCategories(parent: Int, showLoader: Boolean = false) {
+    protected fun loadCategories(parent: Int, showLoader: Boolean = false) {
         binding.refresh.isRefreshing = showLoader
 
         when (parent) {
