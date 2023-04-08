@@ -50,7 +50,12 @@ class CategoryFragment : BaseFragment() {
         }
 
         categoryAdapter = CategoryAdapter {
-            val action = CategoryFragmentDirections.actionNavCategory(it)
+            val action = if ((it.categories ?:0) > 0) {
+                CategoryFragmentDirections.actionNavCategory(it)
+            } else {
+                CategoryFragmentDirections.actionNavCategoryToNavBooks(it)
+            }
+
             findNavController().navigate(action)
         }
 

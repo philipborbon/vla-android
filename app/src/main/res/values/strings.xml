@@ -1,5 +1,6 @@
 <resources>
     <string name="app_name">Virtual Library Assistant</string>
+    <string name="title_books">Books</string>
 
     <string name="message_invalid_username_password">Incorrect Library ID or password.</string>
 

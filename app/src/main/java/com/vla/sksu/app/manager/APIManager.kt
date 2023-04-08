@@ -2,6 +2,7 @@ package com.vla.sksu.app.manager
 
 import android.content.Context
 import com.vla.sksu.app.common.SingletonHolder
+import com.vla.sksu.app.data.Book
 import com.vla.sksu.app.data.Category
 import com.vla.sksu.app.data.ServiceResponse
 import com.vla.sksu.app.data.User
@@ -92,6 +93,26 @@ class APIManager private constructor(context: Context) {
             }
 
             override fun onFailure(call: Call<ArrayList<Category>>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
+    fun getBooks(categoryId: Int, completion: (ServiceResponse<ArrayList<Book>>) -> Unit) {
+        service.getBooks(categoryId).enqueue(object : Callback<ArrayList<Book>> {
+            override fun onResponse(
+                call: Call<ArrayList<Book>>,
+                response: Response<ArrayList<Book>>
+            ) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<ArrayList<Book>>, t: Throwable) {
                 completion(ServiceResponse(success = false, error = t))
             }
         })

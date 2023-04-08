@@ -37,10 +37,12 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
 
             buildConfigField "String", "SERVER_URL", "\"https://sksu-vla.com/api/\""
+            buildConfigField "String", "IMAGE_PATH", "\"https://sksu-vla.com/storage/\""
         }
 
         debug {
             buildConfigField "String", "SERVER_URL", localProperties['DEBUG_SERVER_URL']
+            buildConfigField "String", "IMAGE_PATH", localProperties['DEBUG_IMAGE_PATH']
         }
     }
 }
@@ -66,6 +68,7 @@ dependencies {
     implementation 'com.dmitrymalkovich.android:material-design-dimens:1.4'
     implementation 'com.google.firebase:firebase-core:21.1.1'
     implementation 'com.google.firebase:firebase-messaging:23.1.2'
+    implementation 'com.squareup.picasso:picasso:2.8'
 
     testImplementation 'junit:junit:4.13.2'
 

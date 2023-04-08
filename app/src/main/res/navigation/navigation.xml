@@ -18,12 +18,17 @@
         tools:layout="@layout/fragment_category" >
         <action
             android:id="@+id/action_nav_category"
-            app:destination="@id/nav_category" />
+            app:destination="@id/nav_category"
+            app:popUpTo="@id/nav_category"
+            />
         <argument
             android:name="parent"
             app:argType="com.vla.sksu.app.data.Category"
             android:defaultValue="@null"
             app:nullable="true" />
+        <action
+            android:id="@+id/action_nav_category_to_nav_books"
+            app:destination="@id/nav_books" />
     </fragment>
 
     <fragment
@@ -37,5 +42,15 @@
         android:name="com.vla.sksu.app.ui.about.AboutFragment"
         android:label="@string/menu_about"
         tools:layout="@layout/fragment_about" />
+
+    <fragment
+        android:id="@+id/nav_books"
+        android:name="com.vla.sksu.app.ui.books.BookListingFragment"
+        android:label="@string/title_books"
+        tools:layout="@layout/fragment_book_listing" >
+        <argument
+            android:name="category"
+            app:argType="com.vla.sksu.app.data.Category" />
+    </fragment>
 
 </navigation>

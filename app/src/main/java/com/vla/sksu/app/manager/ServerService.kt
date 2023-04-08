@@ -81,4 +81,7 @@ interface ServerService {
 
     @GET("categories/{id}")
     fun getSubCategories(@Path("id") categoryId: Int): Call<ArrayList<Category>>
+
+    @GET("categories/{categoryId}/books")
+    fun getBooks(@Path("categoryId") categoryId: Int): Call<ArrayList<Book>>
 }
