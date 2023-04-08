@@ -75,7 +75,7 @@ class MainActivity : BaseActivity() {
                 finish()
             } else {
                 if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    showToast(getString(R.string.invalid_username_password))
+                    showToast(getString(R.string.message_invalid_username_password))
                 } else {
                     showToast(response.getErrorMessage())
                 }

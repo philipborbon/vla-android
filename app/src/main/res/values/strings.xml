@@ -1,11 +1,7 @@
 <resources>
     <string name="app_name">Virtual Library Assistant</string>
 
-    <string name="action_sign_in">Login</string>
-    <string name="action_register">Register</string>
-    <string name="invalid_username_password">Incorrect Library ID or password.</string>
-    <string name="text_username">Library ID</string>
-    <string name="text_password">Password</string>
+    <string name="message_invalid_username_password">Incorrect Library ID or password.</string>
 
     <string name="notification_channel_id">notification_channel_vla</string>
     <string name="notification_channel_name">VLA Notification</string>
@@ -17,4 +13,7 @@
 
     <string name="text_label_username">Library ID: %1$s</string>
     <string name="text_logout">Logout</string>
+    <string name="text_username">Library ID</string>
+    <string name="text_password">Password</string>
+    <string name="text_sign_in">Login</string>
 </resources>
