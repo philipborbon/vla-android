@@ -3,6 +3,7 @@
     <string name="title_books">Books</string>
 
     <string name="message_invalid_username_password">Incorrect Library ID or password.</string>
+    <string name="message_empty_books">There are no books that fall under this category.</string>
 
     <string name="notification_channel_id">notification_channel_vla</string>
     <string name="notification_channel_name">VLA Notification</string>

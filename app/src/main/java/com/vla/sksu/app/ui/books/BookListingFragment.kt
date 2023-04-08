@@ -66,6 +66,12 @@ class BookListingFragment : BaseFragment() {
             if (response.success) {
                 booksAdapter?.dataList = response.data
                 booksAdapter?.notifyDataSetChanged()
+
+                binding.labelEmpty.visibility = if (response.data?.isEmpty() == true) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
             } else {
                 Timber.tag(LOG_TAG).e(response.error)
                 showToast(response.getErrorMessage())

@@ -21,6 +21,16 @@
         style="@style/TextAppearance.MaterialComponents.Headline4"
         />
 
+    <TextView
+        android:id="@+id/label_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/message_empty_books"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
+        />
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/refresh"
         android:layout_width="match_parent"
