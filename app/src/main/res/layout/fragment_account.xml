@@ -5,13 +5,29 @@
     android:layout_height="match_parent"
     tools:context=".ui.account.AccountFragment">
 
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/button_logout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/text_logout"
-        android:layout_gravity="center"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    <TextView
+        android:id="@+id/label_empty"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/message_empty_history"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:visibility="visible"
         />
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        >
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
 </FrameLayout>

@@ -4,13 +4,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.vla.sksu.app.R
 import com.vla.sksu.app.databinding.FragmentAccountBinding
-import com.vla.sksu.app.ui.MainActivity
+import com.vla.sksu.app.ui.BaseFragment
+import timber.log.Timber
 
-class AccountFragment : Fragment() {
+private const val LOG_TAG = "AccountFragment"
+
+class AccountFragment : BaseFragment() {
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
+
+    private var historyAdapter: HistoryAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -23,13 +30,47 @@ class AccountFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.buttonLogout.setOnClickListener {
-            (activity as? MainActivity)?.logout()
+        binding.refresh.setColorSchemeResources(R.color.material_orange_500, R.color.material_red_500, R.color.material_teal_500)
+
+        binding.refresh.setOnRefreshListener {
+            loadHistory( true)
         }
+
+        historyAdapter = HistoryAdapter {
+            // History item click action
+        }
+
+        binding.recycler.adapter = historyAdapter
+        binding.recycler.layoutManager = LinearLayoutManager(binding.recycler.context)
+        binding.recycler.addItemDecoration(DividerItemDecoration(binding.recycler.context, LinearLayoutManager.VERTICAL))
+
+        loadHistory()
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun loadHistory(showLoader: Boolean = false) {
+        binding.refresh.isRefreshing = showLoader
+
+        apiManager?.getHistory { response ->
+            if (response.success) {
+                historyAdapter?.dataList = response.data
+                historyAdapter?.notifyDataSetChanged()
+
+                _binding?.labelEmpty?.visibility = if (response.data?.isEmpty() == true) {
+                    View.VISIBLE
+                } else {
+                    View.GONE
+                }
+            } else {
+                Timber.tag(LOG_TAG).e(response.error)
+                showToast(response.getErrorMessage())
+            }
+
+            _binding?.refresh?.isRefreshing = false
+        }
     }
 }

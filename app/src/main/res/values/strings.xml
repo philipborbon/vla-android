@@ -9,6 +9,7 @@
     <string name="message_confirm_borrow">Do you wish to continue with borrowing this book?</string>
     <string name="message_confirmed_borrow">Your borrow request has been posted. We will notify you of any changes in your request.</string>
     <string name="message_ask_notification">To stay informed about the status of your borrow requests, please make sure to turn on notifications in Virtual Library Assistant.</string>
+    <string name="message_empty_history">You have no record of book borrowing requests.</string>
 
     <string name="notification_channel_id">channel_request_updates</string>
     <string name="notification_channel_name">Request Updates</string>
@@ -17,6 +18,10 @@
     <string name="menu_account">Account</string>
     <string name="menu_category">Categories</string>
     <string name="menu_home">Home</string>
+
+    <string name="text_status_pending">Pending</string>
+    <string name="text_status_approved">Approved</string>
+    <string name="text_status_denied">Denied</string>
 
     <string name="text_label_username">Library ID: %1$s</string>
     <string name="text_logout">Logout</string>
@@ -35,4 +40,6 @@
     <string name="text_cancel">Cancel</string>
     <string name="text_ok">OK</string>
     <string name="text_no_thanks">OK</string>
+    <string name="text_date_approved">Date Approved</string>
+    <string name="text_date_requested">Date Requested</string>
 </resources>

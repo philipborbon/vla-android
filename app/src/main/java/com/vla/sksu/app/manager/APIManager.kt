@@ -2,10 +2,7 @@ package com.vla.sksu.app.manager
 
 import android.content.Context
 import com.vla.sksu.app.common.SingletonHolder
-import com.vla.sksu.app.data.Book
-import com.vla.sksu.app.data.Category
-import com.vla.sksu.app.data.ServiceResponse
-import com.vla.sksu.app.data.User
+import com.vla.sksu.app.data.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -74,6 +71,42 @@ class APIManager private constructor(context: Context) {
             }
         })
     }
+
+    fun updatePushToken(token: String?, completion: (ServiceResponse<Void>) -> Unit){
+        service.updatePushToken(token).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
+    fun clearPushToken(completion: (ServiceResponse<Void>) -> Unit) {
+        service.clearPushToken().enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
+    // --
 
     fun getCategories(completion: (ServiceResponse<ArrayList<Category>>) -> Unit) {
         service.getCategories().enqueue(object : Callback<ArrayList<Category>> {
@@ -152,9 +185,12 @@ class APIManager private constructor(context: Context) {
         })
     }
 
-    fun updatePushToken(token: String?, completion: (ServiceResponse<Void>) -> Unit){
-        service.updatePushToken(token).enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+    fun getHistory(completion: (ServiceResponse<ArrayList<History>>) -> Unit) {
+        service.getHistory().enqueue(object : Callback<ArrayList<History>> {
+            override fun onResponse(
+                call: Call<ArrayList<History>>,
+                response: Response<ArrayList<History>>
+            ) {
                 val serviceResponse = ServiceResponse(response.body())
                 serviceResponse.status = response.code()
                 serviceResponse.success = response.isSuccessful
@@ -163,24 +199,7 @@ class APIManager private constructor(context: Context) {
                 completion(serviceResponse)
             }
 
-            override fun onFailure(call: Call<Void>, t: Throwable) {
-                completion(ServiceResponse(success = false, error = t))
-            }
-        })
-    }
-
-    fun clearPushToken(completion: (ServiceResponse<Void>) -> Unit) {
-        service.clearPushToken().enqueue(object : Callback<Void> {
-            override fun onResponse(call: Call<Void>, response: Response<Void>) {
-                val serviceResponse = ServiceResponse(response.body())
-                serviceResponse.status = response.code()
-                serviceResponse.success = response.isSuccessful
-                serviceResponse.errorString = response.errorBody()?.string()
-
-                completion(serviceResponse)
-            }
-
-            override fun onFailure(call: Call<Void>, t: Throwable) {
+            override fun onFailure(call: Call<ArrayList<History>>, t: Throwable) {
                 completion(ServiceResponse(success = false, error = t))
             }
         })
