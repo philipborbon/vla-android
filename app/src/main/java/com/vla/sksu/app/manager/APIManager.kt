@@ -135,62 +135,37 @@ class APIManager private constructor(context: Context) {
         })
     }
 
-    fun updatePushToken(token: String?, completion: (ServiceResponse<Any>) -> Unit){
-        // TODO: updatePushToken
-//        service.updatePushToken(token).enqueue(object: Callback<ServiceResponse<Any>> {
-//            override fun onFailure(call: Call<ServiceResponse<Any>>, t: Throwable) {
-//                Timber.tag(LOG_TAG).e(t)
-//                completion(ServiceResponse(success = false, error = t))
-//            }
-//
-//            override fun onResponse(
-//                call: Call<ServiceResponse<Any>>,
-//                response: Response<ServiceResponse<Any>>
-//            ) {
-//                val serviceResponse = response.body() ?: ServiceResponse()
-//                serviceResponse.status = response.code()
-//                serviceResponse.success = response.code() == HttpURLConnection.HTTP_OK
-//
-//                response.errorBody()?.string()?.let {
-//                    Timber.tag(LOG_TAG).e(it)
-//
-//                    val errorResponse = Gson().fromJson(it, ServiceResponse::class.java)
-//                    serviceResponse.message = errorResponse.message
-//                }
-//
-//                completion(serviceResponse)
-//            }
-//
-//        })
+    fun updatePushToken(token: String?, completion: (ServiceResponse<Void>) -> Unit){
+        service.updatePushToken(token).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
     }
 
-    fun clearPushToken(completion: (ServiceResponse<Any>) -> Unit) {
-        completion(ServiceResponse(success = true))
-        // TODO: clearPushToken
-//        service.clearPushToken().enqueue(object: Callback<ServiceResponse<Any>> {
-//            override fun onFailure(call: Call<ServiceResponse<Any>>, t: Throwable) {
-//                Timber.tag(LOG_TAG).e(t)
-//                completion(ServiceResponse(success = false, error = t))
-//            }
-//
-//            override fun onResponse(
-//                call: Call<ServiceResponse<Any>>,
-//                response: Response<ServiceResponse<Any>>
-//            ) {
-//                val serviceResponse = response.body() ?: ServiceResponse()
-//                serviceResponse.status = response.code()
-//                serviceResponse.success = response.code() == HttpURLConnection.HTTP_OK
-//
-//                response.errorBody()?.string()?.let {
-//                    Timber.tag(LOG_TAG).e(it)
-//
-//                    val errorResponse = Gson().fromJson(it, ServiceResponse::class.java)
-//                    serviceResponse.message = errorResponse.message
-//                }
-//
-//                completion(serviceResponse)
-//            }
-//
-//        })
+    fun clearPushToken(completion: (ServiceResponse<Void>) -> Unit) {
+        service.clearPushToken().enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
     }
 }

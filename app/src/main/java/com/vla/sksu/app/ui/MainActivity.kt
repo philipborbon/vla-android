@@ -1,21 +1,38 @@
 package com.vla.sksu.app.ui
 
+import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 import com.vla.sksu.app.R
 import com.vla.sksu.app.databinding.ActivityMainBinding
 import com.vla.sksu.app.databinding.NavHeaderMainBinding
-import java.net.HttpURLConnection
+import timber.log.Timber
 
+private const val LOG_TAG = "MainActivity"
 
 class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    private val requestPermissionLauncher = registerForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { isGranted: Boolean ->
+        if (isGranted.not()) {
+            Timber.tag(LOG_TAG).w("Notification permission request denied.")
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,11 +73,51 @@ class MainActivity : BaseActivity() {
 
         setupActionBarWithNavController(navController, appBarConfiguration)
         binding.navView.setupWithNavController(navController)
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (! task.isSuccessful) {
+                Timber.tag(LOG_TAG).w(task.exception)
+                return@OnCompleteListener
+            }
+
+            apiManager.updatePushToken(task.result) { response ->
+                if (response.success) {
+                    Timber.tag(LOG_TAG).v("Push token updated.")
+                } else {
+                    Timber.tag(LOG_TAG).e(response.error)
+                    Timber.tag(LOG_TAG).e(response.errorString)
+                }
+            }
+        })
+
+        askNotificationPermission()
     }
 
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_content_main)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    private fun askNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (
+                ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS)
+                    == PackageManager.PERMISSION_GRANTED
+            ) {
+                return
+            }
+
+            if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {
+                AlertDialog.Builder(this)
+                    .setMessage(R.string.message_ask_notification)
+                    .setPositiveButton(R.string.text_ok) { dialog, id  ->
+                        requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                    .setNegativeButton(R.string.text_no_thanks) {_, _, -> }
+            } else {
+                requestPermissionLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+            }
+        }
     }
 
     fun logout() {

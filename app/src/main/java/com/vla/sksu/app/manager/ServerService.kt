@@ -68,11 +68,11 @@ interface ServerService {
     fun whoAmI(): Call<User>
 
     @FormUrlEncoded
-    @POST("user/updateToken")
-    fun updatePushToken(@Field("push_token") token: String?): Call<Any>
+    @POST("user/push-token")
+    fun updatePushToken(@Field("push_token") token: String?): Call<Void>
 
-    @DELETE("user/clearToken")
-    fun clearPushToken(): Call<Any>
+    @DELETE("user/push-token")
+    fun clearPushToken(): Call<Void>
 
     // --
 

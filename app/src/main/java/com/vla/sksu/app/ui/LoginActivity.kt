@@ -65,7 +65,7 @@ class LoginActivity : BaseActivity() {
             } else {
                 if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     showToast(R.string.message_invalid_username_password)
-                    
+
                     binding.inputUsername.requestFocus()
                 } else {
                     showToast(response.getErrorMessage())

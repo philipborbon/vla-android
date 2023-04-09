@@ -8,25 +8,19 @@ import android.content.Intent
 import android.media.RingtoneManager
 import android.os.Build
 import androidx.core.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
 import com.vla.sksu.app.R
 import com.vla.sksu.app.manager.APIManager
 import com.vla.sksu.app.ui.MainActivity
-import com.google.firebase.messaging.FirebaseMessagingService
-import com.google.firebase.messaging.RemoteMessage
 import timber.log.Timber
-import java.net.HttpURLConnection
 
 
-private const val LOG_TAG = "AppFirebaseMS"
+private const val LOG_TAG = "AppMessagingService"
 
 
-class AppFirebaseMessagingService : FirebaseMessagingService() {
+class AppMessagingService : FirebaseMessagingService() {
 
-    /**
-     * Called when message is received.
-     *
-     * @param remoteMessage Object representing the message received from Firebase Cloud Messaging.
-     */
     // [START receive_message]
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
         // [START_EXCLUDE]
@@ -40,7 +34,7 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
         // [END_EXCLUDE]
 
         // Not getting messages here? See why this may be: https://goo.gl/39bRNJ
-        Timber.tag(LOG_TAG).d("From: ${remoteMessage?.from}")
+        Timber.tag(LOG_TAG).d("From: ${remoteMessage.from}")
 
         // Check if message contains a data payload.
 //        remoteMessage?.data?.isNotEmpty()?.let {
@@ -56,7 +50,7 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
 //        }
 
         // Check if message contains a notification payload.
-        remoteMessage?.notification?.let {
+        remoteMessage.notification?.let {
             Timber.tag(LOG_TAG).d("Message Notification Body: ${it.body}")
 
             sendNotification(it)
@@ -68,11 +62,6 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
     // [END receive_message]
 
     // [START on_new_token]
-    /**
-     * Called if InstanceID token is updated. This may occur if the security of
-     * the previous token had been compromised. Note that this is called when the InstanceID token
-     * is initially generated so this is where you would retrieve the token.
-     */
     override fun onNewToken(token: String) {
         Timber.tag(LOG_TAG).d("Refreshed token: $token")
 
@@ -83,26 +72,15 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
     }
     // [END on_new_token]
 
-    /**
-     * Persist token to third-party servers.
-     *
-     * Modify this method to associate the user's FCM InstanceID token with any server-side account
-     * maintained by your application.
-     *
-     * @param token The new token.
-     */
     private fun sendRegistrationToServer(token: String?) {
         val apiManager = APIManager.getInstance(this)
 
         apiManager.updatePushToken(token){ response ->
-            if (response.success == true) {
-                Timber.tag(LOG_TAG).d("Push token updated")
+            if (response.success) {
+                Timber.tag(LOG_TAG).v("Push token updated.")
             } else {
-                if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    Timber.tag(LOG_TAG).d("HTTP_UNAUTHORIZED")
-                } else {
-                    Timber.tag(LOG_TAG).e(response.error)
-                }
+                Timber.tag(LOG_TAG).e(response.error)
+                Timber.tag(LOG_TAG).e(response.errorString)
             }
         }
     }
@@ -134,9 +112,7 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
 
         // Since android Oreo notification channel is needed.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(channelId,
-                getString(R.string.notification_channel_name),
-                NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(channelId, getString(R.string.notification_channel_name), NotificationManager.IMPORTANCE_DEFAULT)
             notificationManager.createNotificationChannel(channel)
         }
 
