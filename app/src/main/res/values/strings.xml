@@ -4,7 +4,7 @@
     <string name="title_book">Book</string>
     <string name="title_request_borrow">Request Borrow</string>
 
-    <string name="message_invalid_username_password">Incorrect Library ID or password.</string>
+    <string name="message_invalid_username_password">The Library ID or password you entered is incorrect.</string>
     <string name="message_empty_books">There are no books that fall under this category.</string>
     <string name="message_confirm_borrow">Do you wish to continue with borrowing this book?</string>
     <string name="message_confirmed_borrow">Your borrow request has been posted. We will notify you of any changes in your request.</string>

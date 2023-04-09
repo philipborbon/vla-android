@@ -74,11 +74,8 @@ class MainActivity : BaseActivity() {
 
                 finish()
             } else {
-                if (response.status == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    showToast(getString(R.string.message_invalid_username_password))
-                } else {
-                    showToast(response.getErrorMessage())
-                }
+                Timber.tag(LOG_TAG).e(response.error)
+                showToast(response.getErrorMessage())
             }
         }
     }

@@ -4,7 +4,11 @@ import android.content.Context
 import android.os.Bundle
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
+import androidx.annotation.DrawableRes
+import androidx.annotation.IntDef
+import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import com.google.android.material.snackbar.BaseTransientBottomBar.Duration
 import com.vla.sksu.app.manager.APIManager
 import com.vla.sksu.app.manager.AuthorizationStore
 import com.vla.sksu.app.manager.UserStore
@@ -23,14 +27,18 @@ open class BaseActivity : AppCompatActivity() {
         apiManager = APIManager.getInstance(this)
     }
 
-    protected fun showToast(errorString: String?) {
-        Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    protected fun showToast(errorString: String?, duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, errorString, duration).show()
+    }
+
+    protected fun showToast(@StringRes errorString: Int, duration: Int = Toast.LENGTH_SHORT) {
+        Toast.makeText(this, errorString, duration).show()
     }
 
     protected fun hideKeyboard() {
-        currentFocus?.let {
-            val inputManager:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-            inputManager.hideSoftInputFromWindow(it.windowToken, InputMethodManager.SHOW_FORCED)
-        }
+        currentFocus ?: return
+
+        val inputManager:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        inputManager.hideSoftInputFromWindow(currentFocus!!.windowToken, InputMethodManager.HIDE_NOT_ALWAYS)
     }
 }
