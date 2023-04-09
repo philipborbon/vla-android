@@ -42,7 +42,9 @@ class BookListAdapter(private val onSelect: (Book) -> Unit) : RecyclerView.Adapt
             binding.image.setImageResource(R.drawable.placeholder_book)
 
             if (book.image.isNullOrBlank().not()) {
-                Picasso.get().load(book.getImagePath()).into(binding.image)
+                Picasso.get().load(book.getImagePath())
+                    .placeholder(R.drawable.placeholder_book)
+                    .into(binding.image)
             }
 
             binding.title.text = book.title

@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.GridLayoutManager
 import com.vla.sksu.app.R
@@ -22,7 +23,7 @@ class BookListingFragment : BaseFragment() {
 
     private val args: BookListingFragmentArgs by navArgs()
 
-    private var category: Category? = null
+    private lateinit var category: Category
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,13 +49,14 @@ class BookListingFragment : BaseFragment() {
         }
 
         booksAdapter = BookListAdapter {
-            // TODO: open book detail
+            val action = BookListingFragmentDirections.actionNavBooksToNavBook(it, category)
+            findNavController().navigate(action)
         }
 
         binding.recycler.adapter = booksAdapter
         binding.recycler.layoutManager = GridLayoutManager(requireContext(), 3)
 
-        binding.category.text = category?.name ?: ""
+        binding.category.text = category.name
 
         loadBooks(args.category.id ?: 0)
     }

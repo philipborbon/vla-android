@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Virtual Library Assistant</string>
     <string name="title_books">Books</string>
+    <string name="title_book">Book</string>
 
     <string name="message_invalid_username_password">Incorrect Library ID or password.</string>
     <string name="message_empty_books">There are no books that fall under this category.</string>
@@ -18,4 +19,11 @@
     <string name="text_username">Library ID</string>
     <string name="text_password">Password</string>
     <string name="text_sign_in">Login</string>
+    <string name="text_author">Author</string>
+    <string name="text_category">Category</string>
+    <string name="text_pages">Pages</string>
+    <string name="text_language">Language</string>
+    <string name="text_description">Description</string>
+    <string name="text_publisher">Publisher</string>
+    <string name="text_date_published">Date Published</string>
 </resources>

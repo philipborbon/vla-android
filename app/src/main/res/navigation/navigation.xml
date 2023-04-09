@@ -64,6 +64,22 @@
         <argument
             android:name="category"
             app:argType="com.vla.sksu.app.data.Category" />
+        <action
+            android:id="@+id/action_nav_books_to_nav_book"
+            app:destination="@id/nav_book" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_book"
+        android:name="com.vla.sksu.app.ui.books.BookFragment"
+        android:label="@string/title_book"
+        tools:layout="@layout/fragment_book" >
+        <argument
+            android:name="book"
+            app:argType="com.vla.sksu.app.data.Book" />
+        <argument
+            android:name="category"
+            app:argType="com.vla.sksu.app.data.Category" />
     </fragment>
 
 </navigation>
