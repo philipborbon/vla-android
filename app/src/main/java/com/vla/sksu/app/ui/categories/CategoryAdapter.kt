@@ -7,7 +7,7 @@ import com.vla.sksu.app.data.Category
 import com.vla.sksu.app.databinding.LayoutCategoryBinding
 
 class CategoryAdapter(private val onSelect: (Category) -> Unit) : RecyclerView.Adapter<CategoryAdapter.CategoryViewHolder>() {
-    var dataList: List<Category>? = null
+    var dataList: ArrayList<Category>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): CategoryViewHolder {
         val binding = LayoutCategoryBinding.inflate(LayoutInflater.from(parent.context), parent, false)

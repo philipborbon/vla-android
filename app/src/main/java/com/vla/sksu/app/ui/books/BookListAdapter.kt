@@ -9,7 +9,7 @@ import com.vla.sksu.app.data.Book
 import com.vla.sksu.app.databinding.LayoutBookItemBinding
 
 class BookListAdapter(private val onSelect: (Book) -> Unit) : RecyclerView.Adapter<BookListAdapter.BookViewHolder>() {
-    var dataList: List<Book>? = null
+    var dataList: ArrayList<Book>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BookViewHolder {
         val binding = LayoutBookItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
