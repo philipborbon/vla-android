@@ -84,4 +84,7 @@ interface ServerService {
 
     @GET("categories/{categoryId}/books")
     fun getBooks(@Path("categoryId") categoryId: Int): Call<ArrayList<Book>>
+
+    @POST("books/{id}/request")
+    fun borrow(@Path("id") id: Int): Call<Void>
 }

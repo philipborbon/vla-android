@@ -2,9 +2,12 @@
     <string name="app_name">Virtual Library Assistant</string>
     <string name="title_books">Books</string>
     <string name="title_book">Book</string>
+    <string name="title_request_borrow">Request Borrow</string>
 
     <string name="message_invalid_username_password">Incorrect Library ID or password.</string>
     <string name="message_empty_books">There are no books that fall under this category.</string>
+    <string name="message_confirm_borrow">Do you wish to continue with borrowing this book?</string>
+    <string name="message_confirmed_borrow">Your borrow request has been posted. We will notify you of any changes in your request.</string>
 
     <string name="notification_channel_id">notification_channel_vla</string>
     <string name="notification_channel_name">VLA Notification</string>
@@ -26,4 +29,8 @@
     <string name="text_description">Description</string>
     <string name="text_publisher">Publisher</string>
     <string name="text_date_published">Date Published</string>
+    <string name="text_borrow">Borrow</string>
+    <string name="text_continue">Continue</string>
+    <string name="text_cancel">Cancel</string>
+    <string name="text_ok">OK</string>
 </resources>

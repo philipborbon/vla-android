@@ -118,6 +118,23 @@ class APIManager private constructor(context: Context) {
         })
     }
 
+    fun borrow(id: Int, completion: (ServiceResponse<Void>) -> Unit) {
+        service.borrow(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
     fun updatePushToken(token: String?, completion: (ServiceResponse<Any>) -> Unit){
         // TODO: updatePushToken
 //        service.updatePushToken(token).enqueue(object: Callback<ServiceResponse<Any>> {

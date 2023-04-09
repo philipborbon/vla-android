@@ -12,10 +12,14 @@ data class ServiceResponse <T> (
             return errorString
         }
 
-        error?.let {
-            return it.localizedMessage
-        } ?: run {
+        status?.let {
             return "Status Code: $status"
         }
+
+        error?.let {
+            return it.localizedMessage
+        }
+
+        return "Unknown issue occurred."
     }
 }
