@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:id="@+id/menu_top">
+    <group android:id="@+id/menu_main_nav">
         <item
             android:id="@+id/nav_home"
             android:icon="@drawable/ic_home"
@@ -23,6 +23,12 @@
             android:id="@+id/nav_about"
             android:icon="@drawable/ic_info"
             android:title="@string/menu_about" />
+    </group>
+
+    <group android:id="@+id/menu_action">
+        <item
+            android:id="@+id/action_logout"
+            android:title="@string/text_logout" />
     </group>
 
 </menu>

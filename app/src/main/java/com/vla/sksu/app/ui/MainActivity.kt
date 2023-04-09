@@ -6,8 +6,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
+import androidx.core.view.GravityCompat
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -54,6 +56,14 @@ class MainActivity : BaseActivity() {
                 headerViewBinding.displayUsername.text = getString(R.string.text_label_username, userStore.libraryId ?: "")
                 headerViewBinding.displayName.text = userStore.name ?: ""
             }
+        }
+
+        binding.navView.menu.findItem(R.id.action_logout).setOnMenuItemClickListener {
+            binding.drawerLayout.closeDrawer(GravityCompat.START)
+
+            logout()
+
+            return@setOnMenuItemClickListener true
         }
 
         // --
@@ -121,7 +131,11 @@ class MainActivity : BaseActivity() {
     }
 
     fun logout() {
+        binding.main.content.loading.visibility = View.VISIBLE
+
         apiManager.logout { response ->
+            binding.main.content.loading.visibility = View.GONE
+
             if (response.success) {
                 userStore.clear()
                 authorizationStore.clear()
