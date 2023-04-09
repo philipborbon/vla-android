@@ -69,7 +69,7 @@ class BookListingFragment : BaseFragment() {
                 booksAdapter?.dataList = response.data
                 booksAdapter?.notifyDataSetChanged()
 
-                binding.labelEmpty.visibility = if (response.data?.isEmpty() == true) {
+                _binding?.labelEmpty?.visibility = if (response.data?.isEmpty() == true) {
                     View.VISIBLE
                 } else {
                     View.GONE
@@ -79,7 +79,7 @@ class BookListingFragment : BaseFragment() {
                 showToast(response.getErrorMessage())
             }
 
-            binding.refresh.isRefreshing = false
+            _binding?.refresh?.isRefreshing = false
         }
     }
 
