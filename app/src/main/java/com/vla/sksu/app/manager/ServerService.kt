@@ -64,6 +64,9 @@ interface ServerService {
     @POST("token")
     fun login(@Field("library_id") username: String?, @Field("password") password: String?): Call<String>
 
+    @DELETE("revoke-token")
+    fun logout(): Call<Void>
+
     @GET("whoami")
     fun whoAmI(): Call<User>
 

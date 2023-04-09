@@ -121,7 +121,7 @@ class MainActivity : BaseActivity() {
     }
 
     fun logout() {
-        apiManager.clearPushToken { response ->
+        apiManager.logout { response ->
             if (response.success) {
                 userStore.clear()
                 authorizationStore.clear()

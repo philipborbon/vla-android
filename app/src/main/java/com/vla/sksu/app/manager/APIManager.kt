@@ -41,6 +41,23 @@ class APIManager private constructor(context: Context) {
         })
     }
 
+    fun logout(completion: (ServiceResponse<Void>) -> Unit) {
+        service.logout().enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
     fun whoAmI(completion: (ServiceResponse<User>) -> Unit) {
         service.whoAmI().enqueue(object: Callback<User> {
             override fun onResponse(call: Call<User>, response: Response<User>) {
