@@ -54,7 +54,7 @@ class BookListingFragment : BaseFragment() {
         }
 
         binding.recycler.adapter = booksAdapter
-        binding.recycler.layoutManager = GridLayoutManager(requireContext(), 3)
+        binding.recycler.layoutManager = GridLayoutManager(binding.recycler.context, 3)
 
         binding.category.text = category.name
 

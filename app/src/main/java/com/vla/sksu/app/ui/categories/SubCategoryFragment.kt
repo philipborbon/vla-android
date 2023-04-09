@@ -37,7 +37,7 @@ class SubCategoryFragment: CategoryFragment() {
         }
 
         binding.recycler.adapter = categoryAdapter
-        binding.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.recycler.layoutManager = LinearLayoutManager(binding.recycler.context)
         binding.recycler.addItemDecoration(DividerItemDecoration(binding.recycler.context, LinearLayoutManager.VERTICAL))
 
         binding.category.text = parent?.name ?: ""
