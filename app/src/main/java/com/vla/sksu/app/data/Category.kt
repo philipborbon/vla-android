@@ -8,6 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class Category (
     @Expose var id: Int? = null,
     @Expose var name: String? = null,
+    @Expose var path: String? = null,
     @Expose var books: Int? = null,
     @Expose var categories: Int? = null,
 ) : Parcelable
