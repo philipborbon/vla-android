@@ -188,8 +188,8 @@ class APIManager private constructor(context: Context) {
         })
     }
 
-    fun borrow(id: Int, completion: (ServiceResponse<Void>) -> Unit) {
-        service.borrow(id).enqueue(object : Callback<Void> {
+    fun borrow(bookId: Int, completion: (ServiceResponse<Void>) -> Unit) {
+        service.borrow(bookId).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 val serviceResponse = ServiceResponse(response.body())
                 serviceResponse.status = response.code()
