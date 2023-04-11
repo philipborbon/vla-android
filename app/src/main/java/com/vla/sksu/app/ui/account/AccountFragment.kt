@@ -55,7 +55,7 @@ class AccountFragment : BaseFragment() {
     private fun loadHistory(showLoader: Boolean = false) {
         binding.refresh.isRefreshing = showLoader
 
-        apiManager?.getHistory { response ->
+        apiManager?.getHistories { response ->
             if (response.success) {
                 historyAdapter?.dataList = response.data
                 historyAdapter?.notifyDataSetChanged()

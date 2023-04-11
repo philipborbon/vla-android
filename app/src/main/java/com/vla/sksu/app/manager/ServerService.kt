@@ -94,6 +94,6 @@ interface ServerService {
     @POST("books/{id}/request")
     fun borrow(@Path("id") id: Int): Call<Void>
 
-    @GET("history")
-    fun getHistory(): Call<ArrayList<History>>
+    @GET("histories")
+    fun getHistories(): Call<ArrayList<History>>
 }

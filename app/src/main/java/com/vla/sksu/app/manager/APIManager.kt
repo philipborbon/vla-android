@@ -205,8 +205,8 @@ class APIManager private constructor(context: Context) {
         })
     }
 
-    fun getHistory(completion: (ServiceResponse<ArrayList<History>>) -> Unit) {
-        service.getHistory().enqueue(object : Callback<ArrayList<History>> {
+    fun getHistories(completion: (ServiceResponse<ArrayList<History>>) -> Unit) {
+        service.getHistories().enqueue(object : Callback<ArrayList<History>> {
             override fun onResponse(
                 call: Call<ArrayList<History>>,
                 response: Response<ArrayList<History>>
