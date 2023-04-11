@@ -43,27 +43,31 @@ class BookFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        if (args.book == null && args.bookId != -1) {
-            getBookDetail(args.bookId)
-        } else {
-            showBookDetail()
-        }
+        binding.refresh.setColorSchemeResources(R.color.material_orange_500, R.color.material_red_500, R.color.material_teal_500)
 
-        // --
+        binding.refresh.setOnRefreshListener {
+            val bookId = args.book?.id ?: args.bookId
+            loadBookDetail(bookId, true)
+        }
 
         binding.buttonBorrow.setOnClickListener {
             confirmBorrow()
         }
+
+        // --
+
+        if (args.book == null && args.bookId != -1) {
+            loadBookDetail(args.bookId)
+        } else {
+            showBookDetail()
+        }
     }
 
-    private fun getBookDetail(bookId: Int) {
-        binding.progress.visibility = View.VISIBLE
-        binding.buttonBorrow.visibility = View.GONE
+    private fun loadBookDetail(bookId: Int, showLoader: Boolean = false) {
+        binding.refresh.isRefreshing = showLoader
+        binding.buttonBorrow.isEnabled = false
 
         apiManager?.getBook(bookId) { response ->
-            _binding?.progress?.visibility = View.GONE
-            _binding?.buttonBorrow?.visibility = View.VISIBLE
-
             if (response.success) {
                 book = response.data
 
@@ -74,6 +78,9 @@ class BookFragment : BaseFragment() {
                 Timber.tag(LOG_TAG).e(response.error)
                 showToast(response.getErrorMessage())
             }
+
+            _binding?.refresh?.isRefreshing = false
+            _binding?.buttonBorrow?.isEnabled = true
         }
     }
 
