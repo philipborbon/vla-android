@@ -25,7 +25,14 @@ class SplashActivity : AppCompatActivity() {
             startActivity(Intent(this, LoginActivity::class.java))
             finish()
         } else {
-            startActivity(Intent(this, MainActivity::class.java))
+            val mainIntent = Intent(this, MainActivity::class.java)
+
+            if (intent.extras?.getString(MainActivity.DATA_ID) != null) {
+                mainIntent.putExtra(MainActivity.DATA_ID, intent.extras?.getString(MainActivity.DATA_ID))
+                mainIntent.putExtra(MainActivity.DATA_TYPE, intent.extras?.getString(MainActivity.DATA_TYPE))
+            }
+
+            startActivity(mainIntent)
             finish()
         }
     }

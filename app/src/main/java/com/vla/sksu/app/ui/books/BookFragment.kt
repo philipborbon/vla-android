@@ -9,7 +9,6 @@ import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import com.vla.sksu.app.R
 import com.vla.sksu.app.data.Book
-import com.vla.sksu.app.data.Category
 import com.vla.sksu.app.databinding.FragmentBookBinding
 import com.vla.sksu.app.ui.BaseFragment
 import timber.log.Timber
@@ -23,9 +22,7 @@ class BookFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private val args: BookFragmentArgs by navArgs()
-
-    private lateinit var book: Book
-    private lateinit var category: Category
+    private var book: Book? = null
 
     private val dateFormatter = SimpleDateFormat("MMMM d, yyyy", Locale.US)
 
@@ -33,7 +30,6 @@ class BookFragment : BaseFragment() {
         super.onCreate(savedInstanceState)
 
         book = args.book
-        category = args.category
     }
 
     override fun onCreateView(
@@ -47,9 +43,46 @@ class BookFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        if (args.book == null && args.bookId != -1) {
+            getBookDetail(args.bookId)
+        } else {
+            showBookDetail()
+        }
+
+        // --
+
+        binding.buttonBorrow.setOnClickListener {
+            confirmBorrow()
+        }
+    }
+
+    private fun getBookDetail(bookId: Int) {
+        binding.progress.visibility = View.VISIBLE
+        binding.buttonBorrow.visibility = View.GONE
+
+        apiManager?.getBook(bookId) { response ->
+            _binding?.progress?.visibility = View.GONE
+            _binding?.buttonBorrow?.visibility = View.VISIBLE
+
+            if (response.success) {
+                book = response.data
+
+                if (_binding != null) {
+                    showBookDetail()
+                }
+            } else {
+                Timber.tag(LOG_TAG).e(response.error)
+                showToast(response.getErrorMessage())
+            }
+        }
+    }
+
+    private fun showBookDetail() {
+        val book = book ?: return
+
         binding.title.text = book.title
         binding.author.text = book.author
-        binding.category.text = category.name
+        binding.category.text = book.category?.name
         binding.description.text = book.description
         binding.language.text = book.language
         binding.pages.text = "${book.pages}"
@@ -59,12 +92,6 @@ class BookFragment : BaseFragment() {
         Picasso.get().load(book.getImagePath())
             .placeholder(R.drawable.placeholder_book)
             .into(binding.image)
-
-        // --
-
-        binding.buttonBorrow.setOnClickListener {
-            confirmBorrow()
-        }
     }
 
     private fun confirmBorrow() {
@@ -82,7 +109,7 @@ class BookFragment : BaseFragment() {
     }
 
     private fun postBorrowRequest() {
-        val bookId = book.id ?: return
+        val bookId = book?.id ?: return
 
         binding.progress.visibility = View.VISIBLE
         binding.buttonBorrow.isEnabled = false

@@ -168,6 +168,26 @@ class APIManager private constructor(context: Context) {
         })
     }
 
+    fun getBook(bookId: Int, completion: (ServiceResponse<Book>) -> Unit) {
+        service.getBook(bookId).enqueue(object : Callback<Book> {
+            override fun onResponse(
+                call: Call<Book>,
+                response: Response<Book>
+            ) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Book>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
     fun borrow(id: Int, completion: (ServiceResponse<Void>) -> Unit) {
         service.borrow(id).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {

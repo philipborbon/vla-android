@@ -76,10 +76,12 @@
         tools:layout="@layout/fragment_book" >
         <argument
             android:name="book"
-            app:argType="com.vla.sksu.app.data.Book" />
+            app:argType="com.vla.sksu.app.data.Book"
+            app:nullable="true" />
         <argument
-            android:name="category"
-            app:argType="com.vla.sksu.app.data.Category" />
+            android:name="bookId"
+            app:argType="integer"
+            android:defaultValue="-1" />
     </fragment>
 
 </navigation>

@@ -10,6 +10,7 @@ import android.view.View
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.ContextCompat
 import androidx.core.view.GravityCompat
+import androidx.navigation.NavController
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
@@ -18,8 +19,11 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
 import com.vla.sksu.app.R
+import com.vla.sksu.app.data.Book
+import com.vla.sksu.app.data.History
 import com.vla.sksu.app.databinding.ActivityMainBinding
 import com.vla.sksu.app.databinding.NavHeaderMainBinding
+import com.vla.sksu.app.ui.books.BookFragmentArgs
 import timber.log.Timber
 
 private const val LOG_TAG = "MainActivity"
@@ -27,6 +31,11 @@ private const val LOG_TAG = "MainActivity"
 class MainActivity : BaseActivity() {
     private lateinit var appBarConfiguration: AppBarConfiguration
     private lateinit var binding: ActivityMainBinding
+
+    companion object {
+        const val DATA_ID = "id"
+        const val DATA_TYPE = "type"
+    }
 
     private val requestPermissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -68,7 +77,7 @@ class MainActivity : BaseActivity() {
 
         // --
 
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
+        val navController = findNavController()
 
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
@@ -101,11 +110,30 @@ class MainActivity : BaseActivity() {
         })
 
         askNotificationPermission()
+
+        // --
+
+        if (intent.extras?.getString(DATA_ID) != null) {
+            val id = intent.extras?.getString(DATA_ID)?.toInt() ?: -1
+            val type = intent.extras?.getString(DATA_TYPE)
+
+            when(type) {
+                Book.NOTIFICATION_TYPE -> {
+                    val bookArgs = BookFragmentArgs(null, id)
+                    findNavController().navigate(R.id.nav_book, bookArgs.toBundle())
+                }
+
+                History.NOTIFICATION_TYPE -> {
+                    // TODO: navigate to history
+                }
+            }
+        }
     }
 
+    private fun findNavController() : NavController = findNavController(R.id.nav_host_fragment_content_main)
+
     override fun onSupportNavigateUp(): Boolean {
-        val navController = findNavController(R.id.nav_host_fragment_content_main)
-        return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+        return findNavController().navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
     private fun askNotificationPermission() {

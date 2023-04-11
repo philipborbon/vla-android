@@ -18,6 +18,11 @@ data class Book (
     @Expose var publisher: String? = null,
     @Expose var datePublished: Date? = null,
     @Expose var pages: Int? = null,
+    @Expose var category: Category? = null,
 ) : Parcelable {
+    companion object {
+        const val NOTIFICATION_TYPE = "book"
+    }
+
     fun getImagePath() = "${BuildConfig.IMAGE_PATH}${image}"
 }

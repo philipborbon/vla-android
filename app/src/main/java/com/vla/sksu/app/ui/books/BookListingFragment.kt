@@ -49,7 +49,7 @@ class BookListingFragment : BaseFragment() {
         }
 
         booksAdapter = BookListAdapter {
-            val action = BookListingFragmentDirections.actionNavBooksToNavBook(it, category)
+            val action = BookListingFragmentDirections.actionNavBooksToNavBook(it)
             findNavController().navigate(action)
         }
 
