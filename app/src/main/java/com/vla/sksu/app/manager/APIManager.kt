@@ -244,4 +244,24 @@ class APIManager private constructor(context: Context) {
             }
         })
     }
+
+    fun getHistoryOverview(completion: (ServiceResponse<HistoryOverview>) -> Unit) {
+        service.getHistoryOverview().enqueue(object : Callback<HistoryOverview> {
+            override fun onResponse(
+                call: Call<HistoryOverview>,
+                response: Response<HistoryOverview>
+            ) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<HistoryOverview>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
 }

@@ -99,4 +99,7 @@ interface ServerService {
 
     @GET("histories/{id}")
     fun getHistory(@Path("id") id: Int): Call<History>
+
+    @GET("histories/overview")
+    fun getHistoryOverview(): Call<HistoryOverview>
 }
