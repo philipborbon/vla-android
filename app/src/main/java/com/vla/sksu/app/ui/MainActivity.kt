@@ -23,6 +23,7 @@ import com.vla.sksu.app.data.Book
 import com.vla.sksu.app.data.History
 import com.vla.sksu.app.databinding.ActivityMainBinding
 import com.vla.sksu.app.databinding.NavHeaderMainBinding
+import com.vla.sksu.app.ui.account.HistoryFragmentArgs
 import com.vla.sksu.app.ui.books.BookFragmentArgs
 import timber.log.Timber
 
@@ -124,7 +125,8 @@ class MainActivity : BaseActivity() {
                 }
 
                 History.NOTIFICATION_TYPE -> {
-                    // TODO: navigate to history
+                    val historyArgs = HistoryFragmentArgs(null, id)
+                    findNavController().navigate(R.id.nav_history, historyArgs.toBundle())
                 }
             }
         }

@@ -11,8 +11,10 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.vla.sksu.app.R
 import com.vla.sksu.app.data.Book
+import com.vla.sksu.app.data.History
 import com.vla.sksu.app.manager.APIManager
 import com.vla.sksu.app.ui.MainActivity
+import com.vla.sksu.app.ui.account.HistoryFragmentArgs
 import com.vla.sksu.app.ui.books.BookFragmentArgs
 import timber.log.Timber
 
@@ -52,7 +54,7 @@ class AppMessagingService : FirebaseMessagingService() {
     private fun sendNotification(notification: RemoteMessage.Notification, data: Map<String, String>? = null) {
         val pendingIntent = when(data?.get(MainActivity.DATA_TYPE)) {
             Book.NOTIFICATION_TYPE -> {
-                val bookArgs = BookFragmentArgs(null, data?.get(MainActivity.DATA_ID)?.toInt() ?: -1)
+                val bookArgs = BookFragmentArgs(null, data[MainActivity.DATA_ID]?.toInt() ?: -1)
 
                 NavDeepLinkBuilder(this)
                     .setComponentName(MainActivity::class.java)
@@ -61,6 +63,17 @@ class AppMessagingService : FirebaseMessagingService() {
                     .setArguments(bookArgs.toBundle())
                     .createPendingIntent()
             }
+            History.NOTIFICATION_TYPE  -> {
+                val historyArgs = HistoryFragmentArgs(null, data[MainActivity.DATA_ID]?.toInt() ?: -1)
+
+                NavDeepLinkBuilder(this)
+                    .setComponentName(MainActivity::class.java)
+                    .setGraph(R.navigation.navigation)
+                    .setDestination(R.id.nav_history)
+                    .setArguments(historyArgs.toBundle())
+                    .createPendingIntent()
+            }
+
             else -> null
         }
 
