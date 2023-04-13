@@ -5,9 +5,13 @@
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="8dp"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
+    android:paddingStart="8dp"
+    android:paddingEnd="8dp"
+    android:paddingTop="12dp"
+    android:paddingBottom="12dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
     >
 
     <ImageView
@@ -74,12 +78,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_date_approved"
+                    android:text="@string/text_date_requested"
                     style="@style/TextAppearance.AppCompat.Caption"
                     />
 
                 <TextView
-                    android:id="@+id/date_approved"
+                    android:id="@+id/date_requested"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Lorem ipsum dolor sit amet, consectetur"
@@ -102,12 +106,12 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="@string/text_date_requested"
+                    android:text="@string/text_date_due"
                     style="@style/TextAppearance.AppCompat.Caption"
                     />
 
                 <TextView
-                    android:id="@+id/date_requested"
+                    android:id="@+id/date_due"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     tools:text="Lorem ipsum dolor sit amet, consectetur"

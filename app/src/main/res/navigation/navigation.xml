@@ -84,4 +84,19 @@
             android:defaultValue="-1" />
     </fragment>
 
+    <fragment
+        android:id="@+id/nav_history"
+        android:name="com.vla.sksu.app.ui.account.HistoryFragment"
+        android:label="@string/title_history"
+        tools:layout="@layout/fragment_history" >
+        <argument
+            android:name="history"
+            app:argType="com.vla.sksu.app.data.History"
+            app:nullable="true" />
+        <argument
+            android:name="historyId"
+            app:argType="integer"
+            android:defaultValue="-1" />
+    </fragment>
+
 </navigation>

@@ -2,6 +2,7 @@
     <string name="app_name">Virtual Library Assistant</string>
     <string name="title_books">Books</string>
     <string name="title_book">Book</string>
+    <string name="title_history">Details</string>
     <string name="title_request_borrow">Request Borrow</string>
 
     <string name="message_invalid_username_password">The Library ID or password you entered is incorrect.</string>
@@ -42,4 +43,5 @@
     <string name="text_no_thanks">OK</string>
     <string name="text_date_approved">Date Approved</string>
     <string name="text_date_requested">Date Requested</string>
+    <string name="text_date_due">Date Due</string>
 </resources>

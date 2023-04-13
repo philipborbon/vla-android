@@ -96,4 +96,7 @@ interface ServerService {
 
     @GET("histories")
     fun getHistories(): Call<ArrayList<History>>
+
+    @GET("histories/{id}")
+    fun getHistory(@Path("id") id: Int): Call<History>
 }

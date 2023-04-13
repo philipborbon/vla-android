@@ -54,10 +54,7 @@ class HistoryAdapter(private val onSelect: (History) -> Unit) : RecyclerView.Ada
 
             binding.title.text = history.book?.title
 
-            binding.dateApproved.text = if (history.approvedAt == null)
-                "N/A"
-            else
-                history.approvedAt?.let { dateFormatter.format(it) }
+            binding.dateDue.text = history.approvedAt?.let { dateFormatter.format(it) } ?: "N/A"
 
             binding.dateRequested.text = history.createdAt?.let { dateFormatter.format(it) }
 
@@ -68,6 +65,8 @@ class HistoryAdapter(private val onSelect: (History) -> Unit) : RecyclerView.Ada
                 }
 
                 1 -> {
+                    // TODO: status when due
+
                     binding.status.setText(R.string.text_status_approved)
                     binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_green_500))
                 }
