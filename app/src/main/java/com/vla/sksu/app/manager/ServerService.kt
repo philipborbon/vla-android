@@ -95,7 +95,7 @@ interface ServerService {
     fun borrow(@Path("id") id: Int): Call<Void>
 
     @GET("histories")
-    fun getHistories(): Call<ArrayList<History>>
+    fun getHistories(@Query("show") show: String?): Call<ArrayList<History>>
 
     @GET("histories/{id}")
     fun getHistory(@Path("id") id: Int): Call<History>

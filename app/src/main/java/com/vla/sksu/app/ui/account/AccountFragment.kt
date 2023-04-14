@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vla.sksu.app.R
+import com.vla.sksu.app.data.HistoryOverview
 import com.vla.sksu.app.databinding.FragmentAccountBinding
 import com.vla.sksu.app.ui.BaseFragment
+import com.vla.sksu.app.ui.common.MenuAdapter
+import com.vla.sksu.app.ui.common.MenuItem
+import com.vla.sksu.app.utils.capitalizeWords
 import timber.log.Timber
 
 private const val LOG_TAG = "AccountFragment"
@@ -17,7 +22,8 @@ class AccountFragment : BaseFragment() {
     private var _binding: FragmentAccountBinding? = null
     private val binding get() = _binding!!
 
-    private var historyAdapter: HistoryAdapter? = null
+    private var menuAdapter: MenuAdapter? = null
+    private val menuList: ArrayList<MenuItem> = arrayListOf()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -33,18 +39,17 @@ class AccountFragment : BaseFragment() {
         binding.refresh.setColorSchemeResources(R.color.material_orange_500, R.color.material_red_500, R.color.material_teal_500)
 
         binding.refresh.setOnRefreshListener {
-            loadHistory( true)
+            loadHistoryOverview( true)
         }
 
-        historyAdapter = HistoryAdapter {
-            // History item click action
-        }
+        menuAdapter = MenuAdapter()
+        menuAdapter?.dataList = menuList
 
-        binding.recycler.adapter = historyAdapter
+        binding.recycler.adapter = menuAdapter
         binding.recycler.layoutManager = LinearLayoutManager(binding.recycler.context)
         binding.recycler.addItemDecoration(DividerItemDecoration(binding.recycler.context, LinearLayoutManager.VERTICAL))
 
-        loadHistory()
+        loadHistoryOverview()
     }
 
     override fun onDestroyView() {
@@ -52,18 +57,13 @@ class AccountFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun loadHistory(showLoader: Boolean = false) {
+    private fun loadHistoryOverview(showLoader: Boolean = false) {
         binding.refresh.isRefreshing = showLoader
 
-        apiManager?.getHistories { response ->
+        apiManager?.getHistoryOverview { response ->
             if (response.success) {
-                historyAdapter?.dataList = response.data
-                historyAdapter?.notifyDataSetChanged()
-
-                _binding?.labelEmpty?.visibility = if (response.data?.isEmpty() == true) {
-                    View.VISIBLE
-                } else {
-                    View.GONE
+                response.data?.let {
+                    buildMenu(it)
                 }
             } else {
                 Timber.tag(LOG_TAG).e(response.error)
@@ -72,5 +72,30 @@ class AccountFragment : BaseFragment() {
 
             _binding?.refresh?.isRefreshing = false
         }
+    }
+
+    private fun buildMenu(data: HistoryOverview) {
+        menuList.clear()
+
+        menuList.add(MenuItem(getString(R.string.text_pendings), data.pendings ?: 0) {
+            val action = AccountFragmentDirections
+                .actionNavAccountToHavHistoryList(getString(R.string.text_pendings).capitalizeWords(), HistoryOverview.KEY_PENDINGS)
+
+            findNavController().navigate(action)
+        })
+
+        menuList.add(MenuItem(getString(R.string.text_to_returns), data.toReturn ?: 0) {
+            val action = AccountFragmentDirections
+                .actionNavAccountToHavHistoryList(getString(R.string.text_to_returns).capitalizeWords(), HistoryOverview.KEY_TO_RETURN)
+            findNavController().navigate(action)
+        })
+
+        menuList.add(MenuItem(getString(R.string.text_all_requests),) {
+            val action = AccountFragmentDirections
+                .actionNavAccountToHavHistoryList(getString(R.string.text_all_requests).capitalizeWords(), HistoryOverview.KEY_ALL)
+            findNavController().navigate(action)
+        })
+
+        menuAdapter?.notifyDataSetChanged()
     }
 }
