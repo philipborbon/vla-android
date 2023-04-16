@@ -4,7 +4,7 @@ import android.os.Parcelable
 import com.google.gson.annotations.Expose
 import com.vla.sksu.app.BuildConfig
 import kotlinx.parcelize.Parcelize
-import java.util.*
+import java.util.Date
 
 @Parcelize
 data class Book (
@@ -18,6 +18,7 @@ data class Book (
     @Expose var publisher: String? = null,
     @Expose var datePublished: Date? = null,
     @Expose var pages: Int? = null,
+    @Expose var isAvailable: Boolean? = null,
     @Expose var category: Category? = null,
 ) : Parcelable {
     companion object {

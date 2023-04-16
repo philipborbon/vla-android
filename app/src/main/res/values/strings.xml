@@ -11,6 +11,8 @@
     <string name="message_confirmed_borrow">Your borrow request has been posted. We will notify you of any changes in your request.</string>
     <string name="message_ask_notification">To stay informed about the status of your borrow requests, please make sure to turn on notifications in Virtual Library Assistant.</string>
     <string name="message_empty_list">You have no record of book borrowing requests.</string>
+    <string name="message_not_available">Book has no available copy for borrowing at the moment. Click \"Notify Me\" to get notified when a copy becomes available.</string>
+    <string name="message_confirmed_notify">We will notify you when book becomes available.</string>
 
     <string name="notification_channel_id">channel_request_updates</string>
     <string name="notification_channel_name">Request Updates</string>
@@ -47,4 +49,5 @@
     <string name="text_pendings">Pending requests</string>
     <string name="text_to_returns">Books to return</string>
     <string name="text_all_requests">Borrow history</string>
+    <string name="text_notify_me">Notify me</string>
 </resources>

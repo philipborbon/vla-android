@@ -10,10 +10,11 @@ import com.squareup.picasso.Picasso
 import com.vla.sksu.app.R
 import com.vla.sksu.app.data.Book
 import com.vla.sksu.app.databinding.FragmentBookBinding
+import com.vla.sksu.app.manager.ServerService
 import com.vla.sksu.app.ui.BaseFragment
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 private const val LOG_TAG = "BookFragment"
 
@@ -54,6 +55,10 @@ class BookFragment : BaseFragment() {
             confirmBorrow()
         }
 
+        binding.buttonNotify.setOnClickListener {
+            postNotifyRequest()
+        }
+
         // --
 
         if (args.book == null && args.bookId != -1) {
@@ -66,6 +71,7 @@ class BookFragment : BaseFragment() {
     private fun loadBookDetail(bookId: Int, showLoader: Boolean = false) {
         binding.refresh.isRefreshing = showLoader
         binding.buttonBorrow.isEnabled = false
+        binding.buttonNotify.isEnabled = false
 
         apiManager?.getBook(bookId) { response ->
             if (response.success) {
@@ -81,6 +87,7 @@ class BookFragment : BaseFragment() {
 
             _binding?.refresh?.isRefreshing = false
             _binding?.buttonBorrow?.isEnabled = true
+            _binding?.buttonNotify?.isEnabled = true
         }
     }
 
@@ -99,6 +106,14 @@ class BookFragment : BaseFragment() {
         Picasso.get().load(book.getImagePath())
             .placeholder(R.drawable.placeholder_book)
             .into(binding.image)
+
+        if (book.isAvailable == true) {
+            binding.buttonBorrow.visibility = View.VISIBLE
+            binding.viewNotAvailable.visibility = View.GONE
+        } else {
+            binding.buttonBorrow.visibility = View.GONE
+            binding.viewNotAvailable.visibility = View.VISIBLE
+        }
     }
 
     private fun confirmBorrow() {
@@ -128,6 +143,15 @@ class BookFragment : BaseFragment() {
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .create()
                     .show()
+            } else if (response.status == ServerService.HTTP_LOCKED) {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.message_not_available)
+                    .setPositiveButton(R.string.text_ok) {_, _ -> }
+                    .setNegativeButton(R.string.text_notify_me) {_, _ ->
+                        postNotifyRequest()
+                    }
+                    .create()
+                    .show()
             } else {
                 Timber.tag(LOG_TAG).e(response.error)
 
@@ -140,6 +164,34 @@ class BookFragment : BaseFragment() {
 
             _binding?.progress?.visibility = View.GONE
             _binding?.buttonBorrow?.isEnabled = true
+        }
+    }
+
+    private fun postNotifyRequest() {
+        val bookId = book?.id ?: return
+
+        binding.progress.visibility = View.VISIBLE
+        binding.buttonNotify.isEnabled = false
+
+        apiManager?.notify(bookId) { response ->
+            if (response.success) {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.message_confirmed_notify)
+                    .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .create()
+                    .show()
+            } else {
+                Timber.tag(LOG_TAG).e(response.error)
+
+                AlertDialog.Builder(requireContext())
+                    .setMessage(response.getErrorMessage())
+                    .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .create()
+                    .show()
+            }
+
+            _binding?.progress?.visibility = View.GONE
+            _binding?.buttonNotify?.isEnabled = true
         }
     }
 

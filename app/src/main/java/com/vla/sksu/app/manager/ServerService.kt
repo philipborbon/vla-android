@@ -16,6 +16,8 @@ interface ServerService {
     companion object {
         private lateinit var instance: ServerService
 
+        const val HTTP_LOCKED = 423
+
         fun getInstance(context: Context): ServerService {
             if ( !(::instance.isInitialized) ) {
                 val authorizationStore = AuthorizationStore.getInstance(context)
@@ -93,6 +95,9 @@ interface ServerService {
 
     @POST("books/{id}/request")
     fun borrow(@Path("id") id: Int): Call<Void>
+
+    @POST("books/{id}/notify")
+    fun notify(@Path("id") id: Int): Call<Void>
 
     @GET("histories")
     fun getHistories(@Query("show") show: String?): Call<ArrayList<History>>

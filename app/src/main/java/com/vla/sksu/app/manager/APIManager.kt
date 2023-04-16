@@ -2,7 +2,12 @@ package com.vla.sksu.app.manager
 
 import android.content.Context
 import com.vla.sksu.app.common.SingletonHolder
-import com.vla.sksu.app.data.*
+import com.vla.sksu.app.data.Book
+import com.vla.sksu.app.data.Category
+import com.vla.sksu.app.data.History
+import com.vla.sksu.app.data.HistoryOverview
+import com.vla.sksu.app.data.ServiceResponse
+import com.vla.sksu.app.data.User
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -190,6 +195,23 @@ class APIManager private constructor(context: Context) {
 
     fun borrow(bookId: Int, completion: (ServiceResponse<Void>) -> Unit) {
         service.borrow(bookId).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
+
+    fun notify(bookId: Int, completion: (ServiceResponse<Void>) -> Unit) {
+        service.notify(bookId).enqueue(object : Callback<Void> {
             override fun onResponse(call: Call<Void>, response: Response<Void>) {
                 val serviceResponse = ServiceResponse(response.body())
                 serviceResponse.status = response.code()
