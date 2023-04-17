@@ -1,6 +1,8 @@
 package com.vla.sksu.app.ui.home
 
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vla.sksu.app.databinding.FragmentHomeBinding
 import com.vla.sksu.app.ui.BaseFragment
+import com.vla.sksu.app.ui.MainActivity
 import timber.log.Timber
 
 private const val LOG_TAG = "HomeFragment"
@@ -19,6 +22,7 @@ class HomeFragment : BaseFragment() {
     private val binding get() = _binding!!
 
     private var searchAdapter: SearchAdapter? = null
+    private lateinit var layoutManager: LinearLayoutManager
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -36,8 +40,10 @@ class HomeFragment : BaseFragment() {
             findNavController().navigate(action)
         }
 
+        layoutManager = LinearLayoutManager(binding.recycler.context)
+
         binding.recycler.adapter = searchAdapter
-        binding.recycler.layoutManager = LinearLayoutManager(binding.recycler.context)
+        binding.recycler.layoutManager = layoutManager
         binding.recycler.addItemDecoration(DividerItemDecoration(binding.recycler.context, LinearLayoutManager.VERTICAL))
 
         binding.buttonSearch.setOnClickListener {
@@ -54,6 +60,33 @@ class HomeFragment : BaseFragment() {
 
             return@setOnEditorActionListener false
         }
+
+        binding.progress.visibility = View.VISIBLE
+
+        Handler(Looper.getMainLooper()).postDelayed({
+            (activity as? MainActivity)?.searchKeyword?.let {
+                _binding?.inputSearch?.setText(it)
+            }
+
+            (activity as? MainActivity)?.searchResults?.let {
+                searchAdapter?.dataList = it
+                searchAdapter?.notifyDataSetChanged()
+            }
+
+            (activity as? MainActivity)?.searchPosition?.let {
+                layoutManager.scrollToPosition(it)
+            }
+
+            _binding?.progress?.visibility = View.GONE
+        }, 500)
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        (activity as? MainActivity)?.searchKeyword = binding.inputSearch.text.toString()
+        (activity as? MainActivity)?.searchResults = searchAdapter?.dataList
+        (activity as? MainActivity)?.searchPosition = layoutManager.findFirstCompletelyVisibleItemPosition()
     }
 
     override fun onDestroyView() {

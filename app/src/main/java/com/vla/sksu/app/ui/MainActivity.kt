@@ -46,6 +46,10 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    var searchResults: ArrayList<Book>? = null
+    var searchKeyword: String? = null
+    var searchPosition: Int? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
