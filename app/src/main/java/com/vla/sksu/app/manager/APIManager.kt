@@ -286,4 +286,24 @@ class APIManager private constructor(context: Context) {
             }
         })
     }
+
+    fun search(keyboard: String, completion: (ServiceResponse<ArrayList<Book>>) -> Unit) {
+        service.search(keyboard).enqueue(object : Callback<ArrayList<Book>> {
+            override fun onResponse(
+                call: Call<ArrayList<Book>>,
+                response: Response<ArrayList<Book>>
+            ) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<ArrayList<Book>>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
 }

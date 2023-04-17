@@ -35,7 +35,7 @@ open class BaseActivity : AppCompatActivity() {
         Toast.makeText(this, errorString, duration).show()
     }
 
-    protected fun hideKeyboard() {
+    fun hideKeyboard() {
         currentFocus ?: return
 
         val inputManager:InputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

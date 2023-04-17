@@ -25,4 +25,8 @@ open class BaseFragment : Fragment() {
     protected fun showToast(message: String?) {
         Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
+
+    protected fun hideKeyboard() {
+        (activity as? BaseActivity)?.hideKeyboard()
+    }
 }

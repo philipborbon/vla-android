@@ -90,6 +90,9 @@ interface ServerService {
     @GET("categories/{categoryId}/books")
     fun getBooks(@Path("categoryId") categoryId: Int): Call<ArrayList<Book>>
 
+    @GET("books")
+    fun search(@Query("keyword") keyword: String): Call<ArrayList<Book>>
+
     @GET("books/{id}")
     fun getBook(@Path("id") id: Int): Call<Book>
 
