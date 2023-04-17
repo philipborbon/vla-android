@@ -42,6 +42,7 @@ class HomeFragment : BaseFragment() {
 
         binding.buttonSearch.setOnClickListener {
             loadSearch(binding.inputSearch.text.toString())
+            hideKeyboard()
         }
 
         binding.inputSearch.setOnEditorActionListener { view, actionId, event ->
@@ -61,8 +62,6 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun loadSearch(keyword: String) {
-        hideKeyboard()
-
         binding.progress.visibility = View.VISIBLE
 
         apiManager?.search(keyword) { response ->
