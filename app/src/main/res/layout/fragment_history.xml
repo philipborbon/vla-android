@@ -25,6 +25,21 @@
                 android:orientation="vertical"
                 >
 
+                <TextView
+                    android:id="@+id/status"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textAllCaps="true"
+                    tools:textColor="@color/material_orange_500"
+                    tools:text="@string/text_status_pending"
+                    style="@style/TextAppearance.AppCompat.Headline"
+                    />
+
+                <Space
+                    android:layout_width="8dp"
+                    android:layout_height="8dp" />
+
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -38,6 +53,7 @@
                         android:cropToPadding="true"
                         android:scaleType="centerCrop"
                         android:src="@drawable/placeholder_book"
+                        android:layout_gravity="center"
                         />
 
                     <Space
@@ -46,23 +62,8 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="match_parent"
+                        android:layout_height="wrap_content"
                         android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/status"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="center"
-                            android:textAllCaps="true"
-                            tools:textColor="@color/material_orange_500"
-                            tools:text="@string/text_status_pending"
-                            style="@style/TextAppearance.AppCompat.Headline"
-                            />
-
-                        <Space
-                            android:layout_width="8dp"
-                            android:layout_height="8dp" />
 
                         <TextView
                             android:id="@+id/title"
@@ -104,6 +105,25 @@
 
                         <TextView
                             android:id="@+id/category"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Lorem ipsum dolor sit amet, consectetur"
+                            style="@style/TextAppearance.AppCompat.Body1"
+                            />
+
+                        <Space
+                            android:layout_width="8dp"
+                            android:layout_height="8dp" />
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="@string/text_circulation"
+                            style="@style/TextAppearance.AppCompat.Caption"
+                            />
+
+                        <TextView
+                            android:id="@+id/circulation"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             tools:text="Lorem ipsum dolor sit amet, consectetur"

@@ -12,6 +12,7 @@ data class Book (
     @Expose var categoryId: Int? = null,
     @Expose var title: String? = null,
     @Expose var language: String? = null,
+    @Expose var circulation: String? = null,
     @Expose var description: String? = null,
     @Expose var image: String? = null,
     @Expose var author: String? = null,

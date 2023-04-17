@@ -92,6 +92,7 @@ class HistoryFragment : BaseFragment() {
         binding.title.text = book.title
         binding.author.text = book.author
         binding.category.text = book.category?.name
+        binding.circulation.text = book.circulation
         binding.description.text = book.description
         binding.language.text = book.language
         binding.pages.text = "${book.pages}"

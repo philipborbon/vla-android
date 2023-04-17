@@ -49,6 +49,7 @@ class SearchAdapter(private val onSelect: (Book) -> Unit) : RecyclerView.Adapter
 
             binding.title.text = book.title
             binding.category.text = book.category?.path
+            binding.circulation.text = book.circulation
             binding.author.text = book.author
             binding.publisher.text = book.publisher
         }
