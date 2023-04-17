@@ -61,7 +61,9 @@ class HomeFragment : BaseFragment() {
             return@setOnEditorActionListener false
         }
 
-        binding.progress.visibility = View.VISIBLE
+        if ((activity as? MainActivity)?.searchResults != null) {
+            binding.progress.visibility = View.VISIBLE
+        }
 
         Handler(Looper.getMainLooper()).postDelayed({
             (activity as? MainActivity)?.searchKeyword?.let {
