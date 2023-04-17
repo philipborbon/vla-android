@@ -3,22 +3,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:padding="16dp"
     >
 
     <ImageView
         android:src="@drawable/text_logo"
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         android:scaleType="centerInside"
         />
 
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        android:padding="12dp"
+        android:layout_weight="1"
         >
         <TextView
             android:layout_width="match_parent"
@@ -28,4 +29,12 @@
             />
     </ScrollView>
 
+    <TextView
+        android:id="@+id/version"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/text_version"
+        android:layout_gravity="center"
+        android:layout_marginBottom="12dp"
+        />
 </LinearLayout>
