@@ -4,6 +4,7 @@
     <string name="title_book">Book</string>
     <string name="title_history">Details</string>
     <string name="title_request_borrow">Request Borrow</string>
+    <string name="title_activity_search">Search Results</string>
 
     <string name="message_invalid_username_password">The Library ID or password you entered is incorrect.</string>
     <string name="message_empty_books">There are no books that fall under this category.</string>
@@ -13,6 +14,7 @@
     <string name="message_empty_list">You have no record of book borrowing requests.</string>
     <string name="message_not_available">Book has no available copy for borrowing at the moment. Click \"Notify Me\" to get notified when a copy becomes available.</string>
     <string name="message_confirmed_notify">We will notify you when book becomes available.</string>
+    <string name="message_empty_search">No books found.</string>
 
     <string name="notification_channel_id">channel_request_updates</string>
     <string name="notification_channel_name">Request Updates</string>
@@ -50,4 +52,6 @@
     <string name="text_to_returns">Books to return</string>
     <string name="text_all_requests">Borrow history</string>
     <string name="text_notify_me">Notify me</string>
+    <string name="text_search">Search</string>
+    <string name="text_search_hint">Enter keyword</string>
 </resources>
