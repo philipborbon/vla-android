@@ -54,7 +54,7 @@ class HistoryAdapter(private val onSelect: (History) -> Unit) : RecyclerView.Ada
 
             binding.title.text = history.book?.title
 
-            binding.dateDue.text = history.approvedAt?.let { dateFormatter.format(it) } ?: "N/A"
+            binding.dateDue.text = history.dueAt?.let { dateFormatter.format(it) } ?: "N/A"
 
             binding.dateRequested.text = history.createdAt?.let { dateFormatter.format(it) }
 
