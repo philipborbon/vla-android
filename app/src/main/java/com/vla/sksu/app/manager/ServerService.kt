@@ -94,7 +94,7 @@ interface ServerService {
     fun search(@Query("keyword") keyword: String): Call<ArrayList<Book>>
 
     @GET("books/{id}")
-    fun getBook(@Path("id") id: Int): Call<Book>
+    fun getBook(@Path("id") id: Int): Call<ResponseData<Book, BookMeta>>
 
     @POST("books/{id}/request")
     fun borrow(@Path("id") id: Int): Call<Void>

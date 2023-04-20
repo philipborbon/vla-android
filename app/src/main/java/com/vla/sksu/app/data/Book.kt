@@ -19,7 +19,6 @@ data class Book (
     @Expose var publisher: String? = null,
     @Expose var datePublished: Date? = null,
     @Expose var pages: Int? = null,
-    @Expose var isAvailable: Boolean? = null,
     @Expose var category: Category? = null,
 ) : Parcelable {
     companion object {

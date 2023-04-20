@@ -9,6 +9,7 @@ import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import com.vla.sksu.app.R
 import com.vla.sksu.app.data.Book
+import com.vla.sksu.app.data.BookMeta
 import com.vla.sksu.app.databinding.FragmentBookBinding
 import com.vla.sksu.app.manager.ServerService
 import com.vla.sksu.app.ui.BaseFragment
@@ -24,6 +25,7 @@ class BookFragment : BaseFragment() {
 
     private val args: BookFragmentArgs by navArgs()
     private var book: Book? = null
+    private var bookMeta: BookMeta? = null
 
     private val dateFormatter = SimpleDateFormat("MMMM d, yyyy", Locale.US)
 
@@ -65,6 +67,7 @@ class BookFragment : BaseFragment() {
             loadBookDetail(args.bookId)
         } else {
             showBookDetail()
+            loadBookDetail(args.book?.id ?: 0)
         }
     }
 
@@ -73,9 +76,12 @@ class BookFragment : BaseFragment() {
         binding.buttonBorrow.isEnabled = false
         binding.buttonNotify.isEnabled = false
 
+        binding.loader.visibility = if(isRefreshing.not()) View.VISIBLE else View.GONE
+
         apiManager?.getBook(bookId) { response ->
             if (response.success) {
-                book = response.data
+                book = response.data?.data
+                bookMeta = response.data?.meta
 
                 if (_binding != null) {
                     showBookDetail()
@@ -86,8 +92,7 @@ class BookFragment : BaseFragment() {
             }
 
             _binding?.refresh?.isRefreshing = false
-            _binding?.buttonBorrow?.isEnabled = true
-            _binding?.buttonNotify?.isEnabled = true
+            _binding?.loader?.visibility = View.GONE
         }
     }
 
@@ -108,12 +113,45 @@ class BookFragment : BaseFragment() {
             .placeholder(R.drawable.placeholder_book)
             .into(binding.image)
 
-        if (book.isAvailable == true) {
-            binding.buttonBorrow.visibility = View.VISIBLE
+        if (bookMeta == null) {
+            binding.viewAvailable.visibility = View.GONE
             binding.viewNotAvailable.visibility = View.GONE
+        }
+
+        val bookMeta = bookMeta ?: return
+
+        if (bookMeta.isAvailable == true) {
+            binding.viewAvailable.visibility = View.VISIBLE
+            binding.viewNotAvailable.visibility = View.GONE
+
+            when(bookMeta.lastRequestStatus) {
+                BookMeta.STATUS_PENDING -> {
+                    binding.textStatus.setText(R.string.message_pending)
+                    binding.textStatus.visibility = View.VISIBLE
+                    binding.buttonBorrow.isEnabled = false
+                }
+
+                BookMeta.STATUS_APPROVED -> {
+                    binding.textStatus.setText(R.string.message_borrowed)
+                    binding.textStatus.visibility = View.VISIBLE
+                    binding.buttonBorrow.isEnabled = false
+                }
+
+                else -> {
+                    if (bookMeta.limitReached == true) {
+                        binding.textStatus.setText(R.string.message_limit_reached)
+                        binding.textStatus.visibility = View.VISIBLE
+                        binding.buttonBorrow.isEnabled = false
+                    } else {
+                        binding.textStatus.visibility = View.GONE
+                        binding.buttonBorrow.isEnabled = true
+                    }
+                }
+            }
         } else {
-            binding.buttonBorrow.visibility = View.GONE
+            binding.viewAvailable.visibility = View.GONE
             binding.viewNotAvailable.visibility = View.VISIBLE
+            binding.buttonNotify.isEnabled = true
         }
     }
 

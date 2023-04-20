@@ -3,9 +3,11 @@ package com.vla.sksu.app.manager
 import android.content.Context
 import com.vla.sksu.app.common.SingletonHolder
 import com.vla.sksu.app.data.Book
+import com.vla.sksu.app.data.BookMeta
 import com.vla.sksu.app.data.Category
 import com.vla.sksu.app.data.History
 import com.vla.sksu.app.data.HistoryOverview
+import com.vla.sksu.app.data.ResponseData
 import com.vla.sksu.app.data.ServiceResponse
 import com.vla.sksu.app.data.User
 import retrofit2.Call
@@ -173,11 +175,11 @@ class APIManager private constructor(context: Context) {
         })
     }
 
-    fun getBook(bookId: Int, completion: (ServiceResponse<Book>) -> Unit) {
-        service.getBook(bookId).enqueue(object : Callback<Book> {
+    fun getBook(bookId: Int, completion: (ServiceResponse<ResponseData<Book, BookMeta>>) -> Unit) {
+        service.getBook(bookId).enqueue(object : Callback<ResponseData<Book, BookMeta>> {
             override fun onResponse(
-                call: Call<Book>,
-                response: Response<Book>
+                call: Call<ResponseData<Book, BookMeta>>,
+                response: Response<ResponseData<Book, BookMeta>>
             ) {
                 val serviceResponse = ServiceResponse(response.body())
                 serviceResponse.status = response.code()
@@ -187,7 +189,7 @@ class APIManager private constructor(context: Context) {
                 completion(serviceResponse)
             }
 
-            override fun onFailure(call: Call<Book>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseData<Book, BookMeta>>, t: Throwable) {
                 completion(ServiceResponse(success = false, error = t))
             }
         })
