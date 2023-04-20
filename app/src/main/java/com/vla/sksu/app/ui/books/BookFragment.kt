@@ -134,7 +134,7 @@ class BookFragment : BaseFragment() {
     private fun postBorrowRequest() {
         val bookId = book?.id ?: return
 
-        binding.progress.visibility = View.VISIBLE
+        binding.loader.visibility = View.VISIBLE
         binding.buttonBorrow.isEnabled = false
 
         apiManager?.borrow(bookId) { response ->
@@ -163,7 +163,7 @@ class BookFragment : BaseFragment() {
                     .show()
             }
 
-            _binding?.progress?.visibility = View.GONE
+            _binding?.loader?.visibility = View.GONE
             _binding?.buttonBorrow?.isEnabled = true
         }
     }
@@ -171,7 +171,7 @@ class BookFragment : BaseFragment() {
     private fun postNotifyRequest() {
         val bookId = book?.id ?: return
 
-        binding.progress.visibility = View.VISIBLE
+        binding.loader.visibility = View.VISIBLE
         binding.buttonNotify.isEnabled = false
 
         apiManager?.notify(bookId) { response ->
@@ -191,7 +191,7 @@ class BookFragment : BaseFragment() {
                     .show()
             }
 
-            _binding?.progress?.visibility = View.GONE
+            _binding?.loader?.visibility = View.GONE
             _binding?.buttonNotify?.isEnabled = true
         }
     }

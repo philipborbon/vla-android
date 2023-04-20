@@ -62,7 +62,7 @@ class HomeFragment : BaseFragment() {
         }
 
         if ((activity as? MainActivity)?.searchResults != null) {
-            binding.progress.visibility = View.VISIBLE
+            binding.loader.visibility = View.VISIBLE
         }
 
         Handler(Looper.getMainLooper()).postDelayed({
@@ -79,7 +79,7 @@ class HomeFragment : BaseFragment() {
                 layoutManager.scrollToPosition(it)
             }
 
-            _binding?.progress?.visibility = View.GONE
+            _binding?.loader?.visibility = View.GONE
         }, 500)
     }
 
@@ -97,7 +97,7 @@ class HomeFragment : BaseFragment() {
     }
 
     private fun loadSearch(keyword: String) {
-        binding.progress.visibility = View.VISIBLE
+        binding.loader.visibility = View.VISIBLE
 
         apiManager?.search(keyword) { response ->
             if (response.success) {
@@ -114,7 +114,7 @@ class HomeFragment : BaseFragment() {
                 showToast(response.getErrorMessage())
             }
 
-            _binding?.progress?.visibility = View.GONE
+            _binding?.loader?.visibility = View.GONE
         }
     }
 }
