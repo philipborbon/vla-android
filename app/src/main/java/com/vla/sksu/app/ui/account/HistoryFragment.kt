@@ -1,10 +1,12 @@
 package com.vla.sksu.app.ui.account
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.squareup.picasso.Picasso
 import com.vla.sksu.app.R
@@ -14,7 +16,7 @@ import com.vla.sksu.app.databinding.FragmentHistoryBinding
 import com.vla.sksu.app.ui.BaseFragment
 import timber.log.Timber
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 private const val LOG_TAG = "HistoryFragment"
 
@@ -55,6 +57,10 @@ class HistoryFragment : BaseFragment() {
             loadHistoryDetail(bookId, true)
         }
 
+        binding.buttonCancel.setOnClickListener {
+            postCancelRequest()
+        }
+
         if (args.history == null && args.historyId != -1) {
             loadHistoryDetail(args.historyId)
         } else {
@@ -62,8 +68,9 @@ class HistoryFragment : BaseFragment() {
         }
     }
 
-    private fun loadHistoryDetail(historyId: Int, isRefreshing: Boolean = false) {
+    private fun loadHistoryDetail(historyId: Int, isRefreshing: Boolean = false, showLoader: Boolean = false) {
         binding.refresh.isRefreshing = isRefreshing
+        binding.loader.visibility = if(showLoader) View.VISIBLE else View.GONE
 
         apiManager?.getHistory(historyId) { response ->
             if (response.success) {
@@ -78,6 +85,7 @@ class HistoryFragment : BaseFragment() {
             }
 
             _binding?.refresh?.isRefreshing = false
+            _binding?.loader?.visibility = View.GONE
         }
     }
 
@@ -107,6 +115,7 @@ class HistoryFragment : BaseFragment() {
             -1 -> {
                 binding.status.setText(R.string.text_status_pending)
                 binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_orange_500))
+                binding.buttonCancel.visibility = View.VISIBLE
             }
 
             1 -> {
@@ -125,5 +134,40 @@ class HistoryFragment : BaseFragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun navigateUp() {
+        findNavController().navigateUp()
+    }
+
+    private fun postCancelRequest() {
+        val requestId = history?.id ?: return
+
+        binding.loader.visibility = View.VISIBLE
+        binding.buttonCancel.isEnabled = false
+
+        apiManager?.cancelRequest(requestId) { response ->
+            if (response.success) {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.message_cancelled)
+                    .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .setOnDismissListener {
+                        navigateUp()
+                    }
+                    .create()
+                    .show()
+            } else {
+                Timber.tag(LOG_TAG).e(response.error)
+
+                AlertDialog.Builder(requireContext())
+                    .setMessage(response.getErrorMessage())
+                    .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .create()
+                    .show()
+            }
+
+            _binding?.loader?.visibility = View.GONE
+            _binding?.buttonCancel?.isEnabled = true
+        }
     }
 }

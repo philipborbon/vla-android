@@ -75,13 +75,13 @@ class BookFragment : BaseFragment() {
         }
     }
 
-    private fun loadBookDetail(bookId: Int, isRefreshing: Boolean = false) {
+    private fun loadBookDetail(bookId: Int, isRefreshing: Boolean = false, showLoader: Boolean = false) {
         binding.refresh.isRefreshing = isRefreshing
         binding.buttonCancel.isEnabled = false
         binding.buttonBorrow.isEnabled = false
         binding.buttonNotify.isEnabled = false
 
-        binding.loader.visibility = if(isRefreshing.not()) View.VISIBLE else View.GONE
+        binding.loader.visibility = if(showLoader) View.VISIBLE else View.GONE
 
         apiManager?.getBook(bookId) { response ->
             if (response.success) {
@@ -200,7 +200,7 @@ class BookFragment : BaseFragment() {
                     .setMessage(R.string.message_confirmed_borrow)
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .setOnDismissListener {
-                        loadBookDetail(book?.id ?: 0)
+                        loadBookDetail(book?.id ?: 0, showLoader = true)
                     }
                     .create()
                     .show()
@@ -268,7 +268,7 @@ class BookFragment : BaseFragment() {
                     .setMessage(R.string.message_cancelled)
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .setOnDismissListener {
-                        loadBookDetail(book?.id ?: 0)
+                        loadBookDetail(book?.id ?: 0, showLoader = true)
                     }
                     .create()
                     .show()
