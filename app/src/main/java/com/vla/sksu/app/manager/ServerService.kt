@@ -110,4 +110,7 @@ interface ServerService {
 
     @GET("histories/overview")
     fun getHistoryOverview(): Call<HistoryOverview>
+
+    @POST("histories/{id}/cancel")
+    fun cancelRequest(@Path("id") id: Int): Call<Void>
 }

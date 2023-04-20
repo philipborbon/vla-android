@@ -19,6 +19,7 @@
     <string name="message_pending">You have a pending borrow request.</string>
     <string name="message_borrowed">Please return the book you borrowed before posting a new borrow request.</string>
     <string name="message_limit_reached">You have reached the maximum number of books allowed to be borrowed. Please return the books you borrowed before posting a new borrow request.</string>
+    <string name="message_cancelled">Your borrow request has been cancelled.</string>
 
     <string name="notification_channel_id">channel_request_updates</string>
     <string name="notification_channel_name">Request Updates</string>

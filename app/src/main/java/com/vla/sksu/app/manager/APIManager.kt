@@ -308,4 +308,21 @@ class APIManager private constructor(context: Context) {
             }
         })
     }
+
+    fun cancelRequest(id: Int, completion: (ServiceResponse<Void>) -> Unit) {
+        service.cancelRequest(id).enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                val serviceResponse = ServiceResponse(response.body())
+                serviceResponse.status = response.code()
+                serviceResponse.success = response.isSuccessful
+                serviceResponse.errorString = response.errorBody()?.string()
+
+                completion(serviceResponse)
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                completion(ServiceResponse(success = false, error = t))
+            }
+        })
+    }
 }

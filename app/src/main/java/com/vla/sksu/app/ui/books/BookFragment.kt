@@ -61,6 +61,10 @@ class BookFragment : BaseFragment() {
             postNotifyRequest()
         }
 
+        binding.buttonCancel.setOnClickListener {
+            postCancelRequest()
+        }
+
         // --
 
         if (args.book == null && args.bookId != -1) {
@@ -73,6 +77,7 @@ class BookFragment : BaseFragment() {
 
     private fun loadBookDetail(bookId: Int, isRefreshing: Boolean = false) {
         binding.refresh.isRefreshing = isRefreshing
+        binding.buttonCancel.isEnabled = false
         binding.buttonBorrow.isEnabled = false
         binding.buttonNotify.isEnabled = false
 
@@ -126,25 +131,39 @@ class BookFragment : BaseFragment() {
 
             when(bookMeta.lastRequestStatus) {
                 BookMeta.STATUS_PENDING -> {
-                    binding.textStatus.setText(R.string.message_pending)
+                    binding.buttonCancel.visibility = View.VISIBLE
+                    binding.buttonCancel.isEnabled = true
+
+                    binding.buttonBorrow.visibility = View.GONE
+
                     binding.textStatus.visibility = View.VISIBLE
-                    binding.buttonBorrow.isEnabled = false
+                    binding.textStatus.setText(R.string.message_pending)
                 }
 
                 BookMeta.STATUS_APPROVED -> {
-                    binding.textStatus.setText(R.string.message_borrowed)
-                    binding.textStatus.visibility = View.VISIBLE
+                    binding.buttonCancel.visibility = View.GONE
+
+                    binding.buttonBorrow.visibility = View.VISIBLE
                     binding.buttonBorrow.isEnabled = false
+
+                    binding.textStatus.visibility = View.VISIBLE
+                    binding.textStatus.setText(R.string.message_borrowed)
                 }
 
                 else -> {
+                    binding.buttonCancel.visibility = View.GONE
+
                     if (bookMeta.limitReached == true) {
-                        binding.textStatus.setText(R.string.message_limit_reached)
-                        binding.textStatus.visibility = View.VISIBLE
+                        binding.buttonBorrow.visibility = View.VISIBLE
                         binding.buttonBorrow.isEnabled = false
+
+                        binding.textStatus.visibility = View.VISIBLE
+                        binding.textStatus.setText(R.string.message_limit_reached)
                     } else {
-                        binding.textStatus.visibility = View.GONE
+                        binding.buttonBorrow.visibility = View.VISIBLE
                         binding.buttonBorrow.isEnabled = true
+
+                        binding.textStatus.visibility = View.GONE
                     }
                 }
             }
@@ -180,6 +199,9 @@ class BookFragment : BaseFragment() {
                 AlertDialog.Builder(requireContext())
                     .setMessage(R.string.message_confirmed_borrow)
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .setOnDismissListener {
+                        loadBookDetail(book?.id ?: 0)
+                    }
                     .create()
                     .show()
             } else if (response.status == ServerService.HTTP_LOCKED) {
@@ -231,6 +253,37 @@ class BookFragment : BaseFragment() {
 
             _binding?.loader?.visibility = View.GONE
             _binding?.buttonNotify?.isEnabled = true
+        }
+    }
+
+    private fun postCancelRequest() {
+        val requestId = bookMeta?.lastRequestId ?: return
+
+        binding.loader.visibility = View.VISIBLE
+        binding.buttonCancel.isEnabled = false
+
+        apiManager?.cancelRequest(requestId) { response ->
+            if (response.success) {
+                AlertDialog.Builder(requireContext())
+                    .setMessage(R.string.message_cancelled)
+                    .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .setOnDismissListener {
+                        loadBookDetail(book?.id ?: 0)
+                    }
+                    .create()
+                    .show()
+            } else {
+                Timber.tag(LOG_TAG).e(response.error)
+
+                AlertDialog.Builder(requireContext())
+                    .setMessage(response.getErrorMessage())
+                    .setNegativeButton(R.string.text_ok) {_, _ -> }
+                    .create()
+                    .show()
+            }
+
+            _binding?.loader?.visibility = View.GONE
+            _binding?.buttonCancel?.isEnabled = true
         }
     }
 
