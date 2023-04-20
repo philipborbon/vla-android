@@ -57,8 +57,8 @@ class AccountFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun loadHistoryOverview(showLoader: Boolean = false) {
-        binding.refresh.isRefreshing = showLoader
+    private fun loadHistoryOverview(isRefreshing: Boolean = false) {
+        binding.refresh.isRefreshing = isRefreshing
 
         apiManager?.getHistoryOverview { response ->
             if (response.success) {

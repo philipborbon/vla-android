@@ -61,8 +61,8 @@ class BookListingFragment : BaseFragment() {
         loadBooks(args.category.id ?: 0)
     }
 
-    private fun loadBooks(categoryId: Int, showLoader: Boolean = false) {
-        binding.refresh.isRefreshing = showLoader
+    private fun loadBooks(categoryId: Int, isRefreshing: Boolean = false) {
+        binding.refresh.isRefreshing = isRefreshing
 
         apiManager?.getBooks(categoryId) { response ->
             if (response.success) {

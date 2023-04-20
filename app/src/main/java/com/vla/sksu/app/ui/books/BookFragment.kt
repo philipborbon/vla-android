@@ -68,8 +68,8 @@ class BookFragment : BaseFragment() {
         }
     }
 
-    private fun loadBookDetail(bookId: Int, showLoader: Boolean = false) {
-        binding.refresh.isRefreshing = showLoader
+    private fun loadBookDetail(bookId: Int, isRefreshing: Boolean = false) {
+        binding.refresh.isRefreshing = isRefreshing
         binding.buttonBorrow.isEnabled = false
         binding.buttonNotify.isEnabled = false
 

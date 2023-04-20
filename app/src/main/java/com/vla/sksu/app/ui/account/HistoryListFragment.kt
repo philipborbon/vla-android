@@ -61,8 +61,8 @@ class HistoryListFragment : BaseFragment() {
         _binding = null
     }
 
-    private fun loadHistory(showLoader: Boolean = false) {
-        binding.refresh.isRefreshing = showLoader
+    private fun loadHistory(isRefreshing: Boolean = false) {
+        binding.refresh.isRefreshing = isRefreshing
 
         apiManager?.getHistories(args.key) { response ->
             if (response.success) {

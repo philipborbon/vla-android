@@ -61,8 +61,8 @@ open class CategoryFragment : BaseFragment() {
         loadCategories(0)
     }
 
-    protected fun loadCategories(parent: Int, showLoader: Boolean = false) {
-        binding.refresh.isRefreshing = showLoader
+    protected fun loadCategories(parent: Int, isRefreshing: Boolean = false) {
+        binding.refresh.isRefreshing = isRefreshing
 
         when (parent) {
             0 -> {
