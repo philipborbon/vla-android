@@ -164,10 +164,11 @@ class HistoryFragment : BaseFragment() {
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .create()
                     .show()
+
+                _binding?.buttonCancel?.isEnabled = true
             }
 
             _binding?.loader?.visibility = View.GONE
-            _binding?.buttonCancel?.isEnabled = true
         }
     }
 }

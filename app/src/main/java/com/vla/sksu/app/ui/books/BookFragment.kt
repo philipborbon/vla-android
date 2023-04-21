@@ -77,9 +77,9 @@ class BookFragment : BaseFragment() {
 
     private fun loadBookDetail(bookId: Int, isRefreshing: Boolean = false, showLoader: Boolean = false) {
         binding.refresh.isRefreshing = isRefreshing
-        binding.buttonCancel.isEnabled = false
-        binding.buttonBorrow.isEnabled = false
-        binding.buttonNotify.isEnabled = false
+//        binding.buttonCancel.isEnabled = false
+//        binding.buttonBorrow.isEnabled = false
+//        binding.buttonNotify.isEnabled = false
 
         binding.loader.visibility = if(showLoader) View.VISIBLE else View.GONE
 
@@ -117,11 +117,6 @@ class BookFragment : BaseFragment() {
         Picasso.get().load(book.getImagePath())
             .placeholder(R.drawable.placeholder_book)
             .into(binding.image)
-
-        if (bookMeta == null) {
-            binding.viewAvailable.visibility = View.GONE
-            binding.viewNotAvailable.visibility = View.GONE
-        }
 
         val bookMeta = bookMeta ?: return
 
@@ -196,12 +191,11 @@ class BookFragment : BaseFragment() {
 
         apiManager?.borrow(bookId) { response ->
             if (response.success) {
+                loadBookDetail(book?.id ?: 0, showLoader = true)
+
                 AlertDialog.Builder(requireContext())
                     .setMessage(R.string.message_confirmed_borrow)
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
-                    .setOnDismissListener {
-                        loadBookDetail(book?.id ?: 0, showLoader = true)
-                    }
                     .create()
                     .show()
             } else if (response.status == ServerService.HTTP_LOCKED) {
@@ -221,10 +215,11 @@ class BookFragment : BaseFragment() {
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .create()
                     .show()
+
+                _binding?.buttonBorrow?.isEnabled = true
             }
 
             _binding?.loader?.visibility = View.GONE
-            _binding?.buttonBorrow?.isEnabled = true
         }
     }
 
@@ -249,10 +244,11 @@ class BookFragment : BaseFragment() {
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .create()
                     .show()
+
+                _binding?.buttonNotify?.isEnabled = true
             }
 
             _binding?.loader?.visibility = View.GONE
-            _binding?.buttonNotify?.isEnabled = true
         }
     }
 
@@ -264,12 +260,11 @@ class BookFragment : BaseFragment() {
 
         apiManager?.cancelRequest(requestId) { response ->
             if (response.success) {
+                loadBookDetail(book?.id ?: 0, showLoader = true)
+
                 AlertDialog.Builder(requireContext())
                     .setMessage(R.string.message_cancelled)
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
-                    .setOnDismissListener {
-                        loadBookDetail(book?.id ?: 0, showLoader = true)
-                    }
                     .create()
                     .show()
             } else {
@@ -280,10 +275,11 @@ class BookFragment : BaseFragment() {
                     .setNegativeButton(R.string.text_ok) {_, _ -> }
                     .create()
                     .show()
+
+                _binding?.buttonCancel?.isEnabled = true
             }
 
             _binding?.loader?.visibility = View.GONE
-            _binding?.buttonCancel?.isEnabled = true
         }
     }
 
