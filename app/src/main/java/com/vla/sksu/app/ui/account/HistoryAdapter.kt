@@ -9,7 +9,7 @@ import com.vla.sksu.app.R
 import com.vla.sksu.app.data.History
 import com.vla.sksu.app.databinding.LayoutHistoryItemBinding
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Locale
 
 class HistoryAdapter(private val onSelect: (History) -> Unit) : RecyclerView.Adapter<HistoryAdapter.HistoryViewHolder>() {
     var dataList: ArrayList<History>? = null
@@ -64,16 +64,19 @@ class HistoryAdapter(private val onSelect: (History) -> Unit) : RecyclerView.Ada
                     binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_orange_500))
                 }
 
-                1 -> {
-                    // TODO: status when due
-
-                    binding.status.setText(R.string.text_status_approved)
-                    binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_green_500))
-                }
-
                 0 -> {
                     binding.status.setText(R.string.text_status_denied)
                     binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_red_500))
+                }
+
+                1 -> {
+                    if (history.returnedAt == null) {
+                        binding.status.setText(R.string.text_status_approved)
+                        binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_green_500))
+                    } else {
+                        binding.status.setText(R.string.text_status_returned)
+                        binding.status.setTextColor(ContextCompat.getColor(binding.root.context, R.color.material_grey_600))
+                    }
                 }
             }
         }

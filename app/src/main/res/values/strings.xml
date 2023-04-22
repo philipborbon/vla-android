@@ -35,6 +35,7 @@
     <string name="text_status_pending">Pending</string>
     <string name="text_status_approved">Approved</string>
     <string name="text_status_denied">Denied</string>
+    <string name="text_status_returned">Returned</string>
 
     <string name="text_label_username">Library ID: %1$s</string>
     <string name="text_logout">Logout</string>
