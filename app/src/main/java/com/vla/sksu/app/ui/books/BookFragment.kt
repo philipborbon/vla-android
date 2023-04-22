@@ -62,7 +62,7 @@ class BookFragment : BaseFragment() {
         }
 
         binding.buttonCancel.setOnClickListener {
-            postCancelRequest()
+            confirmCancel()
         }
 
         // --
@@ -178,6 +178,18 @@ class BookFragment : BaseFragment() {
             }
             .setNegativeButton(R.string.text_cancel) { dialog, id ->
                 dialog.dismiss()
+            }
+
+        builder.create().show()
+    }
+
+    private fun confirmCancel() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(R.string.title_cancel_request)
+            .setMessage(R.string.message_confirm_cancel)
+            .setPositiveButton(R.string.text_no) { dialog, id -> }
+            .setNegativeButton(R.string.text_yes) { dialog, id ->
+                postCancelRequest()
             }
 
         builder.create().show()

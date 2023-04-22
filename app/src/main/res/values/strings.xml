@@ -5,6 +5,7 @@
     <string name="title_history">Details</string>
     <string name="title_request_borrow">Request Borrow</string>
     <string name="title_activity_search">Search Results</string>
+    <string name="title_cancel_request">Cancel Request</string>
 
     <string name="message_invalid_username_password">The Library ID or password you entered is incorrect.</string>
     <string name="message_empty_books">There are no books that fall under this category.</string>
@@ -21,6 +22,7 @@
 <!--    <string name="message_limit_reached">You have reached the maximum number of books allowed to be borrowed. Please return the books you borrowed before posting a new borrow request.</string>-->
     <string name="message_limit_reached">You have reached the maximum number of books allowed to be borrowed.</string>
     <string name="message_cancelled">Your borrow request has been cancelled.</string>
+    <string name="message_confirm_cancel">Do you intend to cancel your borrow request?</string>
 
     <string name="notification_channel_id">channel_request_updates</string>
     <string name="notification_channel_name">Request Updates</string>
@@ -62,4 +64,6 @@
     <string name="text_search_hint">Enter keyword</string>
     <string name="text_circulation">Circulation</string>
     <string name="text_version">Version %1$s</string>
+    <string name="text_yes">Yes</string>
+    <string name="text_no">No</string>
 </resources>

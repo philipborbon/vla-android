@@ -58,7 +58,7 @@ class HistoryFragment : BaseFragment() {
         }
 
         binding.buttonCancel.setOnClickListener {
-            postCancelRequest()
+            confirmCancel()
         }
 
         if (args.history == null && args.historyId != -1) {
@@ -138,6 +138,18 @@ class HistoryFragment : BaseFragment() {
 
     private fun navigateUp() {
         findNavController().navigateUp()
+    }
+
+    private fun confirmCancel() {
+        val builder = AlertDialog.Builder(requireContext())
+        builder.setTitle(R.string.title_cancel_request)
+            .setMessage(R.string.message_confirm_cancel)
+            .setPositiveButton(R.string.text_no) { dialog, id -> }
+            .setNegativeButton(R.string.text_yes) { dialog, id ->
+                postCancelRequest()
+            }
+
+        builder.create().show()
     }
 
     private fun postCancelRequest() {
