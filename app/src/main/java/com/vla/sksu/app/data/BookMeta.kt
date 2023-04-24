@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 data class BookMeta (
     @Expose var isAvailable: Boolean? = null,
     @Expose var limitReached: Boolean? = null,
-    @Expose var activeBorrow: String? = null,
+    @Expose var activeBorrow: Int? = null,
     @Expose var lastRequestId: Int? = null,
     @Expose var lastRequestStatus: String? = null,
 ) : Parcelable {
