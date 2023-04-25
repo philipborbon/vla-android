@@ -23,6 +23,7 @@
     <string name="message_limit_reached">You have reached the maximum number of books allowed to be borrowed.</string>
     <string name="message_cancelled">Your borrow request has been cancelled.</string>
     <string name="message_confirm_cancel">Do you intend to cancel your borrow request?</string>
+    <string name="message_can_not_be_borrowed">Borrowing this book is not allowed.</string>
 
     <string name="notification_channel_id">channel_request_updates</string>
     <string name="notification_channel_name">Request Updates</string>

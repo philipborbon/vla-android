@@ -120,7 +120,16 @@ class BookFragment : BaseFragment() {
 
         val bookMeta = bookMeta ?: return
 
-        if (bookMeta.isAvailable == true) {
+        if (bookMeta.canBeBorrowed == false) {
+            binding.viewAvailable.visibility = View.VISIBLE
+            binding.viewNotAvailable.visibility = View.GONE
+
+            binding.buttonCancel.visibility = View.GONE
+            binding.buttonBorrow.visibility = View.GONE
+
+            binding.textStatus.visibility = View.VISIBLE
+            binding.textStatus.setText(R.string.message_can_not_be_borrowed)
+        } else if (bookMeta.isAvailable == true) {
             binding.viewAvailable.visibility = View.VISIBLE
             binding.viewNotAvailable.visibility = View.GONE
 

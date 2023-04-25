@@ -295,8 +295,8 @@
             android:textColor="@color/material_orange_500"
             android:layout_marginBottom="8dp"
             android:layout_gravity="center"
-            android:visibility="gone"
             android:background="@color/material_light_white"
+            android:visibility="gone"
             tools:visibility="visible"
             style="@style/TextAppearance.AppCompat.Body1"
             />
@@ -307,6 +307,8 @@
             android:layout_height="54dp"
             android:text="@string/text_borrow"
             android:layout_gravity="bottom|center"
+            android:visibility="gone"
+            tools:visibility="visible"
             style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
             />
 
